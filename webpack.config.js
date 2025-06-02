@@ -30,7 +30,7 @@ module.exports = (env, argv) => {
             {
               loader: "file-loader",
               options: {
-                name: "[name].[ext]?ver=[hash]",
+                name: "[name].[ext]?ver=[fullhash]",
                 outputPath: "images",
               },
             },
@@ -42,7 +42,7 @@ module.exports = (env, argv) => {
             {
               loader: "file-loader",
               options: {
-                name: "[name].[ext]?ver=[hash]",
+                name: "[name].[ext]?ver=[fullhash]",
                 outputPath: "images",
               },
             },
@@ -61,8 +61,8 @@ module.exports = (env, argv) => {
     },
     output: {
       path: path.resolve(__dirname, "dist"),
-      chunkFilename: "[name].js?ver=[hash]",
-      filename: "[name].js?ver=[hash]",
+      chunkFilename: "[name].js?ver=[fullhash]",
+      filename: "[name].js?ver=[fullhash]",
       publicPath: "/",
     },
     devtool: isProduction ? "source-map" : "inline-source-map",
