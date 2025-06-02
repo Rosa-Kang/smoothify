@@ -1,4 +1,4 @@
-# Typescript Sportify App
+# Smoothify : Typescript Spotify App
 
 This project is Typescript Music Streaming App
 
