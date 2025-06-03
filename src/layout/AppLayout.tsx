@@ -4,6 +4,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import LibraryHead from "./components/LibraryHead";
 import Library from "./components/Library";
+import Logo from '../assets/Logo.png';
 
 const Layout = styled("div")({
   display: "flex",
@@ -21,6 +22,16 @@ const Sidebar = styled("div")(({theme})=>({
     display: "none"
   }
 }));
+
+const LogoContainer = styled("figure") ({
+  margin: "4px 24px 8px 8px",
+  transition: "ease-in .3s",
+  "&:hover" : {
+    opacity: "70%",
+    cursor: "pointer"
+  },
+})
+
 
 const ContentBox = styled(Box)(({theme}) => ({
     borderRadius: "8px",
@@ -60,6 +71,11 @@ const AppLayout = () => {
   return (
     <Layout>
       <Sidebar>
+        <LogoContainer>
+          <NavLink to="/">
+            <img src={Logo} alt="Logo" style={{ width: '100%', height: 'auto' }} />
+          </NavLink>
+        </LogoContainer>
         <ContentBox>
           <NavList>
               <StyledNavLink to="/">
@@ -78,7 +94,7 @@ const AppLayout = () => {
             <Library  />
         </ContentBox>
       </Sidebar>
-        <Outlet />
+      <Outlet />
     </Layout>
   )
 }
