@@ -4,7 +4,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import LibraryHead from "./components/LibraryHead";
 import Library from "./components/Library";
-import Logo from '../assets/logo.png';
+import Logo from '../assets/smoothify_logo.png';
 
 const Layout = styled("div")({
   display: "flex",
@@ -24,7 +24,7 @@ const Sidebar = styled("div")(({theme})=>({
 }));
 
 const LogoContainer = styled("figure") ({
-  margin: "4px 24px 8px 8px",
+  margin: "4px 98px 4px 8px",
   transition: "ease-in .3s",
   "&:hover" : {
     opacity: "70%",
