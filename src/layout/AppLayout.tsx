@@ -4,7 +4,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import LibraryHead from "./components/LibraryHead";
 import Library from "./components/Library";
-import Logo from '../assets/Logo.png';
+import Logo from '../assets/logo.png';
 
 const Layout = styled("div")({
   display: "flex",
