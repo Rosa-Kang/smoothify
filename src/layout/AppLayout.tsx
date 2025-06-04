@@ -62,7 +62,7 @@ const StyledNavLink = styled(NavLink)(({theme}) => ({
   "&:hover" : {
     color : theme.palette.text.primary
   },
-  "&:active" : {
+  "&.active" : {
     color: theme.palette.text.primary
   }
 }))
