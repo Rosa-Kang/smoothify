@@ -1,0 +1,1 @@
+export const SPOTIFY_BASEURL = process.env.SPOTIFY_BASEURL
