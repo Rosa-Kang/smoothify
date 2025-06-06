@@ -1,39 +1,6 @@
 import { useEffect, useRef } from 'react';
 import useExchangeToken from './hooks/useExchangeToken';
 
-// const OAuthCallback = () => {
-//   const navigate = useNavigate();
-//   const { mutate: exchangeToken } = useExchangeToken();
-//   const hasProcessed = useRef(false);
-
-//   useEffect(() => {
-//     if (hasProcessed.current) return;
-    
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const code = urlParams.get('code');
-//     const codeVerifier = localStorage.getItem('code_verifier');
-
-//     if (code && codeVerifier) {
-//       hasProcessed.current = true;
-//       exchangeToken({ code, codeVerifier }, {
-//         onSuccess: () => {
-//           localStorage.removeItem('code_verifier');
-//           navigate('/', { replace: true });
-//         },
-//         onError: (error) => {
-//           console.error('OAuth error:', error);
-//           navigate('/', { replace: true });
-//         }
-//       });
-//     } else {
-//       navigate('/', { replace: true });
-//     }
-//   }, [exchangeToken, navigate]);
-
-//   return <div>Processing Spotify login...</div>;
-// };
-
-
 const OAuthCallback = () => {
   const { mutate: exchangeToken, isSuccess, isError, isPending } = useExchangeToken();
   const hasProcessed = useRef(false);
