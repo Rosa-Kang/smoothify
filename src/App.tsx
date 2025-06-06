@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'; // Fixed import
 import Loading from './common/components/Loading';
 import useExchangeToken from './hooks/useExchangeToken';
 import { REDIRECT_URI } from './configs/commonConfig';
+import OAuthCallback from './OAuthCallback';
 
 const AppLayout = React.lazy(() => import('./layout/AppLayout'));
 const HomePage = React.lazy(()=> import('./pages/Home/HomePage'));
@@ -31,6 +32,7 @@ function App() {
   return (
     <Suspense fallback={<Loading/>}>
       <Routes>
+        <Route path="/callback" element={<OAuthCallback />} />
         <Route path="/" element={<AppLayout/>}>
             <Route index element={<HomePage/>}  />    
             <Route path="search" element={<SearchPage/>}  />
