@@ -1,28 +1,32 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from './common/components/Loading';
 import useExchangeToken from './hooks/useExchangeToken';
 
-
 const OAuthCallback = () => {
   const navigate = useNavigate();
   const { mutate: exchangeToken, isPending, isSuccess, isError } = useExchangeToken();
+  const hasAttempted = useRef(false);
 
   useEffect(() => {
+    if (hasAttempted.current) return;
+    
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const codeVerifier = localStorage.getItem('code_verifier');
 
     if (code && codeVerifier) {
+      hasAttempted.current = true;
+      window.history.replaceState({}, document.title, '/callback');
       exchangeToken({ code, codeVerifier });
     } else {
       navigate('/', { replace: true });
     }
-  }, [exchangeToken, navigate]);
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
-      localStorage.removeItem('code_verifier'); 
+      localStorage.removeItem('code_verifier');
       navigate('/', { replace: true });
     }
   }, [isSuccess, navigate]);
@@ -31,7 +35,7 @@ const OAuthCallback = () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
         <Loading />
-        <p>Spotify Processing Login...</p>
+        <p>Processing Spotify login...</p>
       </div>
     );
   }
@@ -40,8 +44,13 @@ const OAuthCallback = () => {
     return (
       <div style={{ textAlign: 'center', padding: '50px' }}>
         <h2>Login Failed</h2>
-        <p>Please re-try login</p>
-        <button onClick={() => navigate('/')}>Go back Home</button>
+        <p>Authorization code expired or invalid. Please try again.</p>
+        <button onClick={() => {
+          localStorage.removeItem('code_verifier');
+          navigate('/');
+        }}>
+          Try Again
+        </button>
       </div>
     );
   }
