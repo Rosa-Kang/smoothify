@@ -5,7 +5,7 @@ import { getNewReleasesResponse } from "../models/album";
 export const getNewReleases = async(clientCredentialToken: string):Promise<getNewReleasesResponse> => {
     try {
         const response = await axios.get(
-            `${SPOTIFY_BASEURL}browse/new-releases?limit=6`,
+            `${SPOTIFY_BASEURL}/browse/new-releases?limit=6`,
             {
                 headers: {
                     Authorization: `Bearer ${clientCredentialToken}`,

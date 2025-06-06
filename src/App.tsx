@@ -1,9 +1,7 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom'; // Fixed import
+import { Routes, Route } from 'react-router-dom';
 import Loading from './common/components/Loading';
-import useExchangeToken from './hooks/useExchangeToken';
-import { REDIRECT_URI } from './configs/commonConfig';
 import OAuthCallback from './OAuthCallback';
 
 const AppLayout = React.lazy(() => import('./layout/AppLayout'));
@@ -14,21 +12,6 @@ const PlaylistDetailPage = React.lazy(() => import('./pages/PlaylistDetailPage/P
 const PlaylistPage = React.lazy(() => import('./pages/PlaylistPage/PlaylistPage'));
 
 function App() {
-    const urlParams = new URLSearchParams(window.location.search);
-    let code = urlParams.get('code');
-    let codeVerifier = localStorage.getItem('code_verifier');
-    const { mutate: exchangeToken } = useExchangeToken();
-
-    console.log('Code:', code);
-    console.log('Code Verifier:', codeVerifier);
-    console.log('Redirect URI:', REDIRECT_URI);
-
-    useEffect(() => {
-      if(code && codeVerifier) {
-        exchangeToken({code, codeVerifier});
-      }
-    }, [code, codeVerifier, exchangeToken]);
-
   return (
     <Suspense fallback={<Loading/>}>
       <Routes>

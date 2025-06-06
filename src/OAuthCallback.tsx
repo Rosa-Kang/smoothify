@@ -1,61 +1,80 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Loading from './common/components/Loading';
 import useExchangeToken from './hooks/useExchangeToken';
 
+// const OAuthCallback = () => {
+//   const navigate = useNavigate();
+//   const { mutate: exchangeToken } = useExchangeToken();
+//   const hasProcessed = useRef(false);
+
+//   useEffect(() => {
+//     if (hasProcessed.current) return;
+    
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const code = urlParams.get('code');
+//     const codeVerifier = localStorage.getItem('code_verifier');
+
+//     if (code && codeVerifier) {
+//       hasProcessed.current = true;
+//       exchangeToken({ code, codeVerifier }, {
+//         onSuccess: () => {
+//           localStorage.removeItem('code_verifier');
+//           navigate('/', { replace: true });
+//         },
+//         onError: (error) => {
+//           console.error('OAuth error:', error);
+//           navigate('/', { replace: true });
+//         }
+//       });
+//     } else {
+//       navigate('/', { replace: true });
+//     }
+//   }, [exchangeToken, navigate]);
+
+//   return <div>Processing Spotify login...</div>;
+// };
+
+
 const OAuthCallback = () => {
-  const navigate = useNavigate();
-  const { mutate: exchangeToken, isPending, isSuccess, isError } = useExchangeToken();
-  const hasAttempted = useRef(false);
+  const { mutate: exchangeToken, isSuccess, isError, isPending } = useExchangeToken();
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
-    if (hasAttempted.current) return;
+    if (hasProcessed.current) return;
     
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const codeVerifier = localStorage.getItem('code_verifier');
 
     if (code && codeVerifier) {
-      hasAttempted.current = true;
-      window.history.replaceState({}, document.title, '/callback');
+      hasProcessed.current = true;
       exchangeToken({ code, codeVerifier });
     } else {
-      navigate('/', { replace: true });
+      window.location.href = '/';
     }
-  }, []);
+  }, [exchangeToken]);
 
   useEffect(() => {
     if (isSuccess) {
       localStorage.removeItem('code_verifier');
-      navigate('/', { replace: true });
+      window.location.href = '/';
     }
-  }, [isSuccess, navigate]);
+    if (isError) {
+      window.location.href = '/';
+    }
+  }, [isSuccess, isError]);
 
-  if (isPending) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <Loading />
-        <p>Processing Spotify login...</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localStorage.getItem('access_token')) {
+        localStorage.removeItem('code_verifier');
+        window.location.href = '/';
+      }
+    }, 5000);
 
-  if (isError) {
-    return (
-      <div style={{ textAlign: 'center', padding: '50px' }}>
-        <h2>Login Failed</h2>
-        <p>Authorization code expired or invalid. Please try again.</p>
-        <button onClick={() => {
-          localStorage.removeItem('code_verifier');
-          navigate('/');
-        }}>
-          Try Again
-        </button>
-      </div>
-    );
-  }
+    return () => clearTimeout(timer);
+  }, []);
 
-  return <Loading />;
+  return <div>Processing Spotify login... {isPending && '(Loading...)'}</div>;
 };
 
 export default OAuthCallback;

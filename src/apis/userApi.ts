@@ -6,7 +6,7 @@ export const getCurrentUserProfile = async():Promise<User> => {
     try {
         const response = await axios.get(`${SPOTIFY_BASEURL}/me`, {
             headers : {
-                Authorization: `Bearer ${localStorage.getItems("access_token")}`
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`
             },
         })
         return response.data;
