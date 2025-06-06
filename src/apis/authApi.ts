@@ -39,7 +39,7 @@ export const exchangeToken = async(code:string, codeVerifier:string):Promise<Exc
          const url = "https://accounts.spotify.com/api/token";
 
         if(!CLIENT_ID || !REDIRECT_URI){
-                throw new Error(`Missing required parameters..`)
+                throw new Error(`Missing required parameters to exchangeToken..`)
         }
 
         const body = new URLSearchParams({
@@ -49,6 +49,10 @@ export const exchangeToken = async(code:string, codeVerifier:string):Promise<Exc
             redirect_uri: REDIRECT_URI,
             code_verifier: codeVerifier,
         })
+
+        console.log('Request body:', Object.fromEntries(body));
+        console.log('CLIENT_ID:', CLIENT_ID);
+        console.log('REDIRECT_URI:', REDIRECT_URI);
         
         const response = await axios.post(url, body, {
             headers: {
@@ -58,6 +62,11 @@ export const exchangeToken = async(code:string, codeVerifier:string):Promise<Exc
 
         return response.data;
     } catch (error) {
-        throw new Error(`Failed to fetch Token`)
+        if (axios.isAxiosError(error)) {
+            console.error('Spotify API Error:', error.response?.data);
+            console.error('Status:', error.response?.status);
+            throw new Error(`Spotify API Error: ${JSON.stringify(error.response?.data)}`);
+        }
+        throw new Error(`Failed to fetch Token: ${error}`)
     }
 }
