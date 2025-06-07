@@ -1,35 +1,83 @@
-import { Avatar, Box, styled, Typography } from '@mui/material'
+import { Avatar, Box, IconButton, Menu, MenuItem, styled, Typography, useMediaQuery } from '@mui/material'
 import LoginButton from '../../common/components/LoginButton'
 import { useGetCurrentUserProfile } from '../../hooks/useGetCurrentUserProfile'
+import { useState } from 'react';
+import { useLogout } from '../../hooks/useLogout';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Navbar = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
   const { data: user } = useGetCurrentUserProfile();
-  console.log(user);
+  const queryClient = useQueryClient();
+
+  const logout = () =>{
+    localStorage.removeItem('access_token');
+    queryClient.removeQueries({
+        queryKey: ['current-user-profile']
+    });
+  }
+
+  const handleMenuOpen = (e) => {
+      setAnchorEl(e.currentTarget);
+  }
+
+  const handleMenuClose = () => {
+      logout();
+      setAnchorEl(null);
+  }
   
   const ProfileContainer = styled('div')({
     display: 'flex',
     alignItems: "end",
+    position: 'relative'
   })
+
+  const ProfileMenu = styled(Menu)({
+  "& .MuiPaper-root": {
+    color: "white",
+    width: "160px",
+    transformOrigin: "none !important",
+    top: "5rem !important",
+    left: "unset !important",
+    right: "16px !important"
+  },
+  });
+
+  const ProfileMenuItem = styled(MenuItem)({
+  "&:hover": {
+    backgroundColor: "#444",
+  },
+  });
 
   return (
     <Box display='flex' justifyContent='flex-end' alignItems='center' height='64px'>
       {user ? (
-        <ProfileContainer>
+        <ProfileContainer className='profile-container'>
           <Typography variant='body2' color='primary' marginRight='0.25rem'>Hi👋, {user.display_name?.split(' ')[0]}</Typography>
-            {user.images?.[0]?.url ? (
-              <img 
-                src={user.images[0].url} 
-                alt="User profile"
-                style={{ 
-                  width: '40px', 
-                  height: '40px', 
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                }}
-              />
-                ) : (
-              <Avatar />
-            )}
+            <IconButton onClick={handleMenuOpen} size="small">
+              {user.images?.[0]?.url ? (
+                <img 
+                  src={user.images[0].url} 
+                  alt="User profile"
+                  style={{ 
+                    width: '40px', 
+                    height: '40px', 
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                  }}
+                />
+                  ) : (
+                <Avatar />
+              )}
+            </IconButton>
+            <ProfileMenu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              keepMounted
+            >
+              <ProfileMenuItem onClick={handleMenuClose}>Log out</ProfileMenuItem>
+            </ProfileMenu>
         </ProfileContainer>
   ) : (
     <LoginButton />
