@@ -17,4 +17,3 @@ export const getNewReleases = async(clientCredentialToken: string):Promise<getNe
         throw new Error(`Failed to fetch New Releases`);
     }
 }
-
