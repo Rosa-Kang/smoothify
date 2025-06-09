@@ -1,7 +1,12 @@
 import { styled } from '@mui/material'
-import { SimplifiedPlaylist } from '../../models/playlist';
 
-const PlaylistItem = ({key, name, image, owner}) => {
+interface PlaylistItems {
+    name: string | null, 
+    image: string | null,
+    owner: string
+}
+
+const PlaylistItem = ({ name, image, owner}: PlaylistItems) => {
 
   const PlaylistItemContainer = styled('li')({
     display: "flex",
@@ -10,7 +15,7 @@ const PlaylistItem = ({key, name, image, owner}) => {
     listStyle: "none",
     padding: "8px",
     '& h3':{
-      margin: "0 0 0 1rem",
+      margin: "0 0 0 1rem", 
       fontSize: "16px"
     },
      '& p' :{
@@ -36,8 +41,8 @@ const PlaylistItem = ({key, name, image, owner}) => {
   });
 
   return (
-    <PlaylistItemContainer key={key}>
-      <PlaylistImg src={image} alt={name} />
+    <PlaylistItemContainer>
+      <PlaylistImg src={image || ''} alt={name || ''} />
       <DesContainer>
           <h3>{name}</h3>
           <p>{owner}</p>

@@ -26,3 +26,22 @@ export interface SimplifiedPlaylist {
       type?: string,
       uri?: string
 }
+
+export interface IGetCurrentUserPlaylistRequest {
+
+}
+
+// export interface  IPlaylist{
+//         selected: boolean;
+//         handleClick: (id: string) => void;
+//         name : string | "",
+//         images :Image[],
+//         id : string | "",
+//         key : string,
+//         artistName : string,
+//         owner?: Owner,
+// }
+
+export type  TGetCurrentUserPlaylistResponse = {
+
+}

@@ -2,7 +2,6 @@ import { Avatar, Box, IconButton, Menu, MenuItem, styled, Typography, useMediaQu
 import LoginButton from '../../common/components/LoginButton'
 import { useGetCurrentUserProfile } from '../../hooks/useGetCurrentUserProfile'
 import { useState } from 'react';
-import { useLogout } from '../../hooks/useLogout';
 import { useQueryClient } from '@tanstack/react-query';
 
 const Navbar = () => {
@@ -23,7 +22,6 @@ const Navbar = () => {
 
   const handleMenuClose = () => {
       logout();
-      setAnchorEl(null);
   }
   
   const ProfileContainer = styled('div')({

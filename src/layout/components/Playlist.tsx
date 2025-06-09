@@ -1,5 +1,6 @@
 import { styled } from '@mui/material';
-import { SimplifiedPlaylist } from '../../models/playlist'
+import { SimplifiedPlaylist } from '../../models/playlist';
+
 import PlaylistItem from './PlaylistItem';
 
 interface PlaylistProps {
@@ -9,13 +10,13 @@ interface PlaylistProps {
 const Playlist = ({ playlists }: PlaylistProps) => {
     console.log(playlists);
 
-    const PlaylistContainer = styled('ul')({
+    const PlaylistItemContainer = styled('ul')({
         marginLeft: 0,
         paddingLeft: 0
     })
   return (
     <div>
-        <PlaylistContainer>
+        <PlaylistItemContainer>
             {playlists.map((item) => (
                 <PlaylistItem 
                     key = {item.id}
@@ -24,7 +25,7 @@ const Playlist = ({ playlists }: PlaylistProps) => {
                     owner = {`Playlist • ${item.owner?.display_name || ""}`}
                 />
             ))}
-        </PlaylistContainer>
+        </PlaylistItemContainer>
     </div>
   )
 }
