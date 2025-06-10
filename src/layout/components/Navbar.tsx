@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("access_token"));
   const { data: user } = useGetCurrentUserProfile();
   const queryClient = useQueryClient();
 
@@ -14,6 +15,8 @@ const Navbar = () => {
     queryClient.removeQueries({
         queryKey: ['current-user-profile']
     });
+    setIsLoggedIn(false);
+    console.log(localStorage.getItem("access_token"), user)
   }
 
   const handleMenuOpen = (e) => {
@@ -21,6 +24,7 @@ const Navbar = () => {
   }
 
   const handleMenuClose = () => {
+      setAnchorEl(null);
       logout();
   }
   
@@ -49,7 +53,7 @@ const Navbar = () => {
 
   return (
     <Box display='flex' justifyContent='flex-end' alignItems='center' height='64px'>
-      {user ? (
+      {user && isLoggedIn ? (
         <ProfileContainer className='profile-container'>
           <Typography variant='body2' color='primary' marginRight='0.25rem'>Hi👋, {user.display_name?.split(' ')[0]}</Typography>
             <IconButton onClick={handleMenuOpen} size="small">
@@ -68,14 +72,14 @@ const Navbar = () => {
                 <Avatar />
               )}
             </IconButton>
-            <ProfileMenu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              keepMounted
-            >
-              <ProfileMenuItem onClick={handleMenuClose}>Log out</ProfileMenuItem>
-            </ProfileMenu>
+              <ProfileMenu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                keepMounted
+              >
+                <ProfileMenuItem onClick={handleMenuClose}>Log out</ProfileMenuItem>
+              </ProfileMenu>
         </ProfileContainer>
   ) : (
     <LoginButton />
