@@ -1,6 +1,12 @@
   
 import { createTheme } from "@mui/material";
 
+declare module '@mui/material/styles' {
+  interface TypeBackground {
+    tinted: string;
+  }
+}
+
 const theme = createTheme({
   palette: {
     mode: "dark",
@@ -13,6 +19,7 @@ const theme = createTheme({
     background: {
       default: "#000",
       paper: "#121212",
+      tinted: "#ffffff1a"
     },
     text: {
       primary: "#fff",
