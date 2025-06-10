@@ -51,8 +51,7 @@ const PlaylistDetailPage = () => {
         )}
         <h2>{playlist?.name}</h2>
          {playlist?.owner?.display_name && <span>{playlist.owner.display_name}</span>}
-         {playlist?.tracks?.total && <span> • {playlist.tracks.total} song</span>}
-
+         {playlist?.tracks?.total && <span> • {playlist.tracks.total} {playlist.tracks.total < 2 ? 'song' : 'songs'}</span>}
       </TextContainer>
     </PlaylistDetailContainer>
   )
