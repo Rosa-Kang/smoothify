@@ -1,7 +1,8 @@
-import { styled, Typography } from '@mui/material';
+import { Skeleton, styled, Typography } from '@mui/material';
 import { useGetPlaylist } from '../../hooks/useGetPlaylist'
 import { Navigate, useParams } from 'react-router'
 import { useAverageImageColor } from '../../hooks/useAverageImageColor';
+import { useState } from 'react';
 
 interface PlaylistDetailContainerProps {
   bgColor?: string | null;
@@ -34,6 +35,7 @@ const TextContainer = styled('div')({
 
 const PlaylistDetailPage = () => {
   const { id } = useParams<{id: string}>();
+  const [imageLoaded, setImageLoaded] = useState(false);
   if(id === undefined) return <Navigate to='/' />;
   const { data : playlist } = useGetPlaylist({ playlist_id:id,})
   const dominantColor = useAverageImageColor(playlist?.images?.[0]?.url);
@@ -41,7 +43,30 @@ const PlaylistDetailPage = () => {
   return (
     <PlaylistDetailContainer bgColor={dominantColor}>
       <ImageContainer>
-        <img src={playlist?.images?.[0]?.url} alt={playlist?.name} />
+        {playlist?.images?.[0]?.url ? (
+          <> 
+            {!imageLoaded && (
+              <Skeleton 
+                variant="rectangular" 
+                width={228} 
+                height={228} 
+                className="skeleton-overlay"
+              />
+            )}
+            <img 
+              src={playlist.images[0].url} 
+              alt={playlist.name}
+              onLoad={() => setImageLoaded(true)}
+              style={{
+                filter: imageLoaded ? 'blur(0px)' : 'blur(15px)',
+                opacity: imageLoaded ? 1 : 0.8,
+                transform: imageLoaded ? 'scale(1)' : 'scale(1.05)',
+              }}
+            />
+          </>
+        ) : (
+          <Skeleton variant="rectangular" width={228} height={228} />
+        )}
       </ImageContainer>
       <TextContainer>
         {playlist?.public && (
