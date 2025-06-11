@@ -21,8 +21,6 @@ const Playlist = ({ playlists }: PlaylistProps) => {
     setClickedId(id)
   }
 
-  console.log(playlists);
-
   return (
     <div>
         <PlaylistItemContainer>

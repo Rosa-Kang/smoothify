@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useAverageImageColor = (imageSrc : string | null) => {
+export const useAverageImageColor = (imageSrc : string | undefined) => {
   const [averageColor, setAverageColor] = useState(null);
 
   useEffect(() => {

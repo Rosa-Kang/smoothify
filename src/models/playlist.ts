@@ -1,5 +1,5 @@
 import { ApiResponse } from "./apiresponse"
-import { ExternalUrls, Followers, Image, Owner, Restrictions } from "./commonType"
+import { Artist, ExternalUrls, Followers, Image, Owner, Restrictions, SpotifyImage } from "./commonType"
 
 export interface GetCurrentUserPlaylistsRequest {
     limit ?: number,
@@ -7,6 +7,7 @@ export interface GetCurrentUserPlaylistsRequest {
 }
 
 export type GetCurrentUserPlaylistsResponse = ApiResponse<SimplifiedPlaylist>
+export type GetPlaylistItemsResponse = ApiResponse<PlaylistTrack>
 
 export interface BasePlaylist {
       collaborative?: boolean,
@@ -37,20 +38,125 @@ export interface GetPlaylistRequest {
   additional_type? : string
 }
 
+export interface GetPlaylistItemsRequest extends GetPlaylistRequest{
+  limit?: number,
+  offset?: number,
+  additional_types?: string
+}
+
 export interface GetPlaylistResponse extends BasePlaylist {
   tracks : ApiResponse<PlaylistTrack>
   followers : Followers
 }
 
 export interface PlaylistTrack {
-  added_at?: string | null,
+  added_at?: string | null;
   added_by?: {
     external_urls?: ExternalUrls;
     href?: string;
     id?: string;
     type?: string;
     uri?: string;
-  } | null,
+  } | null;
   is_local: boolean; 
-  track: {}; 
+  track: Track | Episode ;
+}
+
+
+export interface Track {
+  album: Album;
+  artists?: Artist[];
+  available_markets?: string[];
+  disc_number?: number;
+  duration_ms?: number;
+  explicit?: boolean;
+  external_ids?: {
+    isrc?: string;
+    ean?: string;
+    upc?: string;
+  };
+  external_urls?: ExternalUrls;
+  href?: string;
+  id?: string;
+  is_playable?: boolean;
+  linked_from?: {};
+  restrictions?: { reason?: string };
+  name?: string;
+  popularity?: number;
+  preview_url?: string | null;
+  track_number?: number;
+  type?: "track";
+  uri?: string;
+  is_local?: boolean;
+}
+
+export interface Album {
+  album_type: string;
+  total_tracks: number;
+  available_markets: string[];
+  external_urls?: ExternalUrls;
+  href: string;
+  id: string;
+  images: Image[];
+  name: string;
+  release_date: string;
+  release_date_precision: string;
+  restrictions?: {
+    reason?: string;
+  };
+  type: string;
+  uri: string;
+  artists: Artist[];
+}
+
+
+export interface Episode {
+  description: string;
+  html_description: string;
+  duration_ms: number;
+  explicit: boolean;
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
+  images: Image[];
+  is_externally_hosted: boolean;
+  is_playable: boolean;
+  name: string;
+  release_date: string;
+  release_date_precision: string;
+  resume_point?: {
+    fully_played?: boolean;
+    resume_position_ms?: number;
+  };
+  type: string;
+  uri: string;
+  restrictions?: {
+    reason?: string;
+  };
+  show: Show;
+}
+
+export interface Show {
+  available_markets: string[];
+  copyright: Copyright[];
+  description: string;
+  html_description: string;
+  explicit: boolean;
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
+  images: Image[];
+  is_externally_hosted: boolean;
+  languages: string[];
+  media_type: string;
+  name: string;
+  publisher: string;
+  type: string;
+  uri: string;
+  total_episodes: number;
+}
+
+export interface Copyright {
+  text?: string;
+  type?: string;
 }
