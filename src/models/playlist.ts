@@ -16,7 +16,7 @@ export interface BasePlaylist {
       href?: string,
       id?: string,
       images?: Image[],
-      name?: string,
+      name?: string | undefined,
       owner?: Owner,
       public?: boolean,
       snapshot_id?: string,
@@ -136,6 +136,8 @@ export interface Episode {
   show: Show;
 }
 
+export type SimplifiedEpisode = Omit<Episode, "show">;
+
 export interface Show {
   available_markets: string[];
   copyright: Copyright[];
@@ -166,4 +168,27 @@ export interface CreatePlaylistRequest {
   playlistPublic? : boolean,
   collaborative? : boolean,
   description?: string
+}
+
+export interface SimplifiedAudiobook {
+  authors: { name : string }[],
+  available_market : string[],
+  copyrights : Copyright,
+  description: string,
+  html_description: string,
+  edition?: string,
+  external_urls: ExternalUrls,
+  href: string,
+  id: string,
+  images : Image[],
+  languages: string[],
+  media_type: string,
+  name: string,
+  narrators: {
+    name: string
+  }[],
+  publisher : string,
+  type: "audiobook",
+  uri: string,
+  total_chapters : number,
 }

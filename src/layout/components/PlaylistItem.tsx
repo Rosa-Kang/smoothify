@@ -1,4 +1,4 @@
-import { styled } from '@mui/material'
+import { Skeleton, styled } from '@mui/material'
 
 const PlaylistItemContainer = styled('li')<{ $isClicked: boolean }>(({theme, $isClicked}) => ({
   display: "flex",
@@ -40,10 +40,10 @@ const PlaylistImg = styled('img')({
 });
 
 interface PlaylistItems {
-  name: string | null, 
-  image: string | null,
+  name: string | undefined, 
+  image: string,
   owner: string,
-  id: string | undefined,
+  id: string,
   handleClick : (id: string) => void,
   clickedId : string
 }
@@ -56,7 +56,7 @@ const PlaylistItem = ({ name, image, owner, id, handleClick, clickedId}: Playlis
       $isClicked={isClicked}
       onClick={() => handleClick(id)}
       >
-      <PlaylistImg src={image || ''} alt={name || ''} />
+      <PlaylistImg src={image} alt={name} />
       <DesContainer>
           <h3>{name}</h3>
           <p>{owner}</p>

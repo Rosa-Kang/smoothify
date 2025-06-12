@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useGetPlaylistItems } from '../../hooks/useGetPlaylistItems';
 import PlaylistItem from './components/PlaylistItem';
 import { PAGE_LIMIT } from '../../configs/commonConfig';
+import EmptyPlaylistSearch from '../../layout/components/EmptyPlaylistSearch';
 
 interface PlaylistDetailContainerProps {
   bgColor?: string | null;
@@ -64,8 +65,6 @@ const PlaylistDetailPage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   
   if(id === undefined) return <Navigate to='/' />;
-
-  console.log('PlaylistItems :', playlistItems);
   return (
     <PlaylistDetailContainer bgColor={dominantColor}>
       <PlaylistDetailHead sx={{ justifyContent: {  xs: 'center',  md: 'flex-start'}}}>
@@ -107,7 +106,7 @@ const PlaylistDetailPage = () => {
           </TextContainer>
       </PlaylistDetailHead>
 
-      { playlist?.tracks?.total === 0 ? <Typography>Search..</Typography> : (
+      { playlist?.tracks?.total === 0 ? <EmptyPlaylistSearch /> : (
         <TableContainer sx={{ overflow:'auto', maxHeight:"45vh", marginTop: '1.25rem', '&::-webkit-scrollbar': { width: '10px', }, '&::-webkit-scrollbar-track': { background: 'rgba(0,0,0,0.1)', borderRadius: '6px', }, '&::-webkit-scrollbar-thumb': { background: 'rgba(0,0,0,0.3)', borderRadius: '6px', transition: 'background 0.3s ease', }, '&::-webkit-scrollbar-thumb:hover': { background: 'rgba(0,0,0,0.5)', }, }}>
           <Table stickyHeader sx={{minWidth: '100%'}}>
                 <TableHead>
