@@ -3,8 +3,10 @@ import LoginButton from '../../common/components/LoginButton'
 import { useGetCurrentUserProfile } from '../../hooks/useGetCurrentUserProfile'
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("access_token"));
   const { data: user } = useGetCurrentUserProfile();
@@ -16,6 +18,7 @@ const Navbar = () => {
         queryKey: ['current-user-profile']
     });
     setIsLoggedIn(false);
+    navigate('/');
     console.log(localStorage.getItem("access_token"), user)
   }
 

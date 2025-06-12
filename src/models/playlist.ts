@@ -160,3 +160,10 @@ export interface Copyright {
   text?: string;
   type?: string;
 }
+
+export interface CreatePlaylistRequest {
+  name: string,
+  playlistPublic? : boolean,
+  collaborative? : boolean,
+  description?: string
+}

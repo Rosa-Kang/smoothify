@@ -1,4 +1,4 @@
-import { Skeleton, styled, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Skeleton, styled, Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer } from '@mui/material';
 import { useGetPlaylist } from '../../hooks/useGetPlaylist'
 import { Navigate, useParams } from 'react-router'
 import { useAverageImageColor } from '../../hooks/useAverageImageColor';
@@ -108,28 +108,30 @@ const PlaylistDetailPage = () => {
       </PlaylistDetailHead>
 
       { playlist?.tracks?.total === 0 ? <Typography>Search..</Typography> : (
-        <Table sx={{marginTop: '1.25rem'}}>
-          <TableHead>
-              <TableRow>
-                  <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>#</TableCell>
-                  <TableCell>Title</TableCell>
-                  <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>Album</TableCell>
-                  <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>Date Added</TableCell>
-                  <TableCell>Duration</TableCell>
-              </TableRow>
-            </TableHead>
-            
-            <TableBody>
-                {playlistItems?.pages.map((page, pageIndex) => page.items.map((item, itemIndex) => {
-                  return (
-                  <PlaylistItem 
-                      item = {item}
-                      key= {pageIndex * PAGE_LIMIT + itemIndex + 1}
-                      index = {pageIndex * PAGE_LIMIT + itemIndex + 1}
-                    />
-                )}))}
-            </TableBody>
-        </Table>
+        <TableContainer sx={{ overflow:'auto', maxHeight:"45vh", marginTop: '1.25rem', '&::-webkit-scrollbar': { width: '10px', }, '&::-webkit-scrollbar-track': { background: 'rgba(0,0,0,0.1)', borderRadius: '6px', }, '&::-webkit-scrollbar-thumb': { background: 'rgba(0,0,0,0.3)', borderRadius: '6px', transition: 'background 0.3s ease', }, '&::-webkit-scrollbar-thumb:hover': { background: 'rgba(0,0,0,0.5)', }, }}>
+          <Table stickyHeader sx={{minWidth: '100%'}}>
+                <TableHead>
+                  <TableRow>
+                      <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>#</TableCell>
+                      <TableCell>Title</TableCell>
+                      <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>Album</TableCell>
+                      <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>Date Added</TableCell>
+                      <TableCell>Duration</TableCell>
+                  </TableRow>
+                </TableHead>
+    
+                <TableBody>
+                    {playlistItems?.pages.map((page, pageIndex) => page.items.map((item, itemIndex) => {
+                      return (
+                      <PlaylistItem 
+                          item = {item}
+                          key= {pageIndex * PAGE_LIMIT + itemIndex + 1}
+                          index = {pageIndex * PAGE_LIMIT + itemIndex + 1}
+                        />
+                    )}))}
+                </TableBody>
+          </Table>
+        </TableContainer>
       ) }
     </PlaylistDetailContainer>
   )
