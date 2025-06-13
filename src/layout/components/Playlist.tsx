@@ -15,7 +15,7 @@ interface PlaylistProps {
 
 const Playlist = ({ playlists }: PlaylistProps) => {
   const navigate = useNavigate();
-  const [clickedId, setClickedId] = useState('');
+  const [clickedId, setClickedId] = useState<string | null>(null);
   const handleClick = (id : string) =>{
     navigate(`/playlist/${id}`);
     setClickedId(id)
@@ -24,14 +24,14 @@ const Playlist = ({ playlists }: PlaylistProps) => {
   return (
     <div>
         <PlaylistItemContainer>
-            {playlists.map((item) => (
+            {playlists.map((item, index) => (
                 <PlaylistItem 
                     handleClick = {handleClick}
                     clickedId={clickedId}
-                    key = {item.id}
+                    key = {item.id + '-' +index}
                     id = {item.id}
                     name={item.name || ""}
-                    image = {item.images && item.images[0]?.url || null}
+                    image = {item.images && item.images[0]?.url || undefined}
                     owner = {`Playlist • ${item.owner?.display_name || ""}`}
                 />
             ))}

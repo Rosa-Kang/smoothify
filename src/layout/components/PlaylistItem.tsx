@@ -44,8 +44,8 @@ interface PlaylistItems {
   image: string,
   owner: string,
   id: string,
-  handleClick : (id: string) => void,
-  clickedId : string
+  handleClick : (id: string ) => void,
+  clickedId : string | null
 }
 
 const PlaylistItem = ({ name, image, owner, id, handleClick, clickedId}: PlaylistItems) => {

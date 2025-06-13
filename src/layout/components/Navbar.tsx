@@ -19,7 +19,6 @@ const Navbar = () => {
     });
     setIsLoggedIn(false);
     navigate('/');
-    console.log(localStorage.getItem("access_token"), user)
   }
 
   const handleMenuOpen = (e) => {

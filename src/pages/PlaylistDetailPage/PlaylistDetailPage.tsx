@@ -1,4 +1,4 @@
-import { Skeleton, styled, Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer } from '@mui/material';
+import { Skeleton, styled, Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer, Box } from '@mui/material';
 import { useGetPlaylist } from '../../hooks/useGetPlaylist'
 import { Navigate, useParams } from 'react-router'
 import { useAverageImageColor } from '../../hooks/useAverageImageColor';
@@ -7,6 +7,8 @@ import { useGetPlaylistItems } from '../../hooks/useGetPlaylistItems';
 import PlaylistItem from './components/PlaylistItem';
 import { PAGE_LIMIT } from '../../configs/commonConfig';
 import EmptyPlaylistSearch from '../../layout/components/EmptyPlaylistSearch';
+import LoginButton from '../../common/components/LoginButton';
+import ErrorMessage from '../../common/components/ErrorMessage';
 
 interface PlaylistDetailContainerProps {
   bgColor?: string | null;
@@ -15,13 +17,14 @@ interface PlaylistDetailContainerProps {
 const PlaylistDetailContainer = styled('div')<PlaylistDetailContainerProps>(({ theme, bgColor }) => ({
     padding: "1rem",
     display: "flex",
+    flexDirection:"column",
     borderRadius: '8px',
     flexWrap: "wrap",
     background: bgColor ? 
-  `radial-gradient(circle at 20% 20%, ${bgColor}FF 0%, transparent 50%), 
-   radial-gradient(circle at 80% 80%, ${bgColor}DD 0%, transparent 50%), 
-   linear-gradient(135deg, ${bgColor}99 0%, ${bgColor}66 50%, transparent 100%)` 
-  : 'transparent',
+        `radial-gradient(circle at 20% 20%, ${bgColor}FF 0%, transparent 50%), 
+        radial-gradient(circle at 80% 80%, ${bgColor}DD 0%, transparent 50%), 
+        linear-gradient(135deg, ${bgColor}99 0%, ${bgColor}66 50%, transparent 100%)` 
+        : 'transparent',
     transition: 'background 0.3s ease',
     [theme.breakpoints.up('md')]: {
         padding: '2rem',
@@ -64,7 +67,23 @@ const PlaylistDetailPage = () => {
   const dominantColor = useAverageImageColor(playlist?.images?.[0]?.url);
   const [imageLoaded, setImageLoaded] = useState(false);
   
-  if(id === undefined) return <Navigate to='/' />;
+  if(id === undefined || playlistItemsError) {
+    return (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="100%"
+          flexDirection="column"
+        >
+          <Typography variant="h2" fontWeight={700} mb="20px">
+            Please login again.
+          </Typography>
+          <LoginButton />
+        </Box>
+      );
+  }
+
   return (
     <PlaylistDetailContainer bgColor={dominantColor}>
       <PlaylistDetailHead sx={{ justifyContent: {  xs: 'center',  md: 'flex-start'}}}>
@@ -100,9 +119,9 @@ const PlaylistDetailPage = () => {
                 public playlist
               </Typography>
             )}
-            <h2>{playlist?.name}</h2>
+            <Typography variant='h1' fontSize={{  xs: '48px',  md: '4.5rem'}}>{playlist?.name}</Typography>
             {playlist?.owner?.display_name && <span>{playlist.owner.display_name}</span>}
-            {playlist?.tracks?.total && <span> • {playlist.tracks.total} {playlist.tracks.total < 2 ? 'song' : 'songs'}</span>}
+            {playlist?.tracks && <span> • {playlist.tracks.total} {playlist.tracks.total < 2 ? 'song' : 'songs'}</span>}
           </TextContainer>
       </PlaylistDetailHead>
 
