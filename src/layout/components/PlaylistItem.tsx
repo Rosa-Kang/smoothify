@@ -56,7 +56,9 @@ const PlaylistItem = ({ name, image, owner, id, handleClick, clickedId}: Playlis
       $isClicked={isClicked}
       onClick={() => handleClick(id)}
       >
-      <PlaylistImg src={image} alt={name} />
+      {image? (<PlaylistImg src={image} alt={name} />): (
+        <Skeleton width={48} height={48} variant='circular'/>
+      )}
       <DesContainer>
           <h3>{name}</h3>
           <p>{owner}</p>
