@@ -2,13 +2,14 @@ import { Skeleton, styled, Table, TableBody, TableCell, TableHead, TableRow, Typ
 import { useGetPlaylist } from '../../hooks/useGetPlaylist'
 import { Navigate, useParams } from 'react-router'
 import { useAverageImageColor } from '../../hooks/useAverageImageColor';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetPlaylistItems } from '../../hooks/useGetPlaylistItems';
 import PlaylistItem from './components/PlaylistItem';
 import { PAGE_LIMIT } from '../../configs/commonConfig';
 import EmptyPlaylistSearch from '../../layout/components/EmptyPlaylistSearch';
 import LoginButton from '../../common/components/LoginButton';
 import ErrorMessage from '../../common/components/ErrorMessage';
+import { AxiosError } from 'axios';
 
 interface PlaylistDetailContainerProps {
   bgColor?: string | null;
@@ -53,8 +54,9 @@ const TextContainer = styled('div')({
 })
 
 const PlaylistDetailPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("access_token"));
   const { id } = useParams<{id: string}>();
-  const { data : playlist } = useGetPlaylist({ playlist_id:id || "" });
+  const { data : playlist , error: playlistError } = useGetPlaylist({ playlist_id:id || "" });
   const { 
     data : playlistItems, 
     isLoading : isPlaylistItemsLoading,
@@ -66,8 +68,56 @@ const PlaylistDetailPage = () => {
 
   const dominantColor = useAverageImageColor(playlist?.images?.[0]?.url);
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkToken = () => {
+      const hasToken = !!localStorage.getItem("access_token");
+      setIsLoggedIn(hasToken);
+    };
+
+    window.addEventListener('storage', checkToken);
+    
+    const interval = setInterval(checkToken, 100);
+
+    return () => {
+      window.removeEventListener('storage', checkToken);
+      clearInterval(interval);
+    };
+  }, []);
+
+    useEffect(() => {
+    const isPlaylistUnauthorized = playlistError && (playlistError as AxiosError)?.response?.status === 401;
+    const isPlaylistItemsUnauthorized = playlistItemsError && (playlistItemsError as AxiosError)?.response?.status === 401;
+    
+    if (isPlaylistUnauthorized || isPlaylistItemsUnauthorized) {
+      localStorage.removeItem("access_token");
+      setIsLoggedIn(false);
+    }
+  }, [playlistError, playlistItemsError]);
   
-  if(id === undefined || playlistItemsError) {
+if (!isLoggedIn || id === undefined) {
+    return (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="100%"
+          flexDirection="column"
+        > 
+          <Typography variant='h1'>Authentication Required</Typography>
+          <Typography variant="h2" fontWeight={700} mb="20px">
+            Your session has expired. Please log in again to access your playlists.
+          </Typography>
+          <LoginButton />
+        </Box>
+      );
+}
+
+const isUnauthorized = 
+    (playlistError && (playlistError as AxiosError)?.response?.status === 401) ||
+    (playlistItemsError && (playlistItemsError as AxiosError)?.response?.status === 401);
+    
+  if (isUnauthorized) {
     return (
         <Box
           display="flex"
