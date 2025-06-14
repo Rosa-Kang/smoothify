@@ -41,10 +41,10 @@ const PlaylistImg = styled('img')({
 
 interface PlaylistItems {
   name: string | undefined, 
-  image: string,
+  image: string | undefined,
   owner: string,
-  id: string,
-  handleClick : (id: string ) => void,
+  id: string | undefined,
+  handleClick : (id: string | undefined ) => void,
   clickedId : string | null
 }
 

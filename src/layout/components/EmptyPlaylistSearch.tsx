@@ -1,9 +1,10 @@
-import { InputAdornment, styled, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { InputAdornment, styled, TextField, Typography, CircularProgress } from '@mui/material'
+import React, { useState, useEffect } from 'react'
 import { useSearchItemsByKeyword } from '../../hooks/uesSearchItemsbyKeyword';
 import { SEARCH_TYPE } from '../../models/search';
 import { SearchResultList } from './SearchResultList';
 import SearchIcon from '@mui/icons-material/Search';
+import { useInView } from "react-intersection-observer";
 
 const EmptyPlaylistSearchContainer = styled('div') ({
       display: 'flex',
@@ -12,16 +13,77 @@ const EmptyPlaylistSearchContainer = styled('div') ({
       marginTop: '2.5rem'
 })
 
+const LoadingContainer = styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '1rem',
+});
+
+const LoadingTrigger = styled('div')({
+  height: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
 const EmptyPlaylistSearch = () => {
   const [keyword, setKeyword] = useState<string>('');
-  const {data, error, isLoading} = useSearchItemsByKeyword({
+  const {
+    data, 
+    hasNextPage,
+    error, 
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage
+  } = useSearchItemsByKeyword({
     q: keyword,
     type : [SEARCH_TYPE.Track]
+  });
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+    triggerOnce: false,
   });
   
   const handleSearchKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
       setKeyword(e.target.value)
   }
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const renderSearchResults = () => {
+    if (!data?.pages || data.pages.length === 0) {
+      return <Typography>No results found</Typography>;
+    }
+
+    return (
+      <>
+        {data.pages.map((page, pageIndex) => {
+          if (!page.tracks?.items) return null;
+          return (
+            <SearchResultList 
+              key={`search-result-page-${pageIndex}`} 
+              list={page.tracks.items} 
+            />
+          );
+        })}
+        
+        {hasNextPage && (
+          <LoadingTrigger ref={ref}>
+            {isFetchingNextPage && (
+              <CircularProgress size={24} />
+            )}
+          </LoadingTrigger>
+        )}
+      </>
+    );
+  };
+
   return (
     <EmptyPlaylistSearchContainer>
       <Typography variant='h1' my="10px">
@@ -44,13 +106,22 @@ const EmptyPlaylistSearch = () => {
           }}
       />
 
-       {data?.pages.length === 0? (
-          <>No result</>
-        ) : (data?.pages.map((item, index) => {
-          if(!item.tracks) return false;
-          return  <SearchResultList key={'Search Result List' + index} list={item?.tracks?.items} />
-        }
-        ))}
+      {error && (
+        <Typography color="error" sx={{ mt: 2 }}>
+          Error loading search results. Please try again.
+        </Typography>
+      )}
+
+      {isLoading && keyword.trim() !== '' && (
+        <LoadingContainer>
+          <CircularProgress size={24} />
+          <Typography variant="body2" sx={{ ml: 1 }}>
+            Searching...
+          </Typography>
+        </LoadingContainer>
+      )}
+
+      {!isLoading && keyword.trim() !== '' && renderSearchResults()}
     </EmptyPlaylistSearchContainer>
   )
 }

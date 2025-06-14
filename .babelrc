@@ -4,7 +4,7 @@
     [
       "@babel/preset-react",
       {
-        "runtime": "automatic"
+        "runtime": "automatic" // no need to import React from 'react' in JSX file
       }
     ],
     "@babel/preset-typescript"

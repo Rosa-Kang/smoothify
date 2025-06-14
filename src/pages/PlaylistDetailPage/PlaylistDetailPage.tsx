@@ -75,9 +75,10 @@ const PlaylistDetailPage = () => {
           justifyContent="center"
           height="100%"
           flexDirection="column"
-        >
+        > 
+          <Typography variant='h1'>Authentication Required</Typography>
           <Typography variant="h2" fontWeight={700} mb="20px">
-            Please login again.
+            Your session has expired. Please log in again to access your playlists.
           </Typography>
           <LoginButton />
         </Box>
