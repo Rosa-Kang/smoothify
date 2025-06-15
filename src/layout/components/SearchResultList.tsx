@@ -1,8 +1,11 @@
-import { Button, styled, Typography } from "@mui/material"
+import { Button, CircularProgress, styled, Typography } from "@mui/material"
 import { Track } from "../../models/playlist"
+import { useAddTracksToPlaylist } from "../../hooks/useAddTracksToPlaylist"
+import { useState } from "react"
 
 interface SearchResultListProps {
-    list : Track[]
+    list : Track[],
+    playlist_id: string;
 }
 
 const TrackRow = styled('div') ({
@@ -38,29 +41,75 @@ const ButtonContainer = styled('div')({
   justifyContent:'flex-end'
 })
 
-export const SearchResultList = ({list}:SearchResultListProps) => {
-  console.log(list);
+export const SearchResultList = ({list, playlist_id}:SearchResultListProps) => {
+  const addTracksMutation = useAddTracksToPlaylist();
+  const [addedTracks, setAddedTracks] = useState<Set<string>>(new Set());
+
+  const handleAddTrack = async (track: Track) => {
+    if (!track.id) return; 
+    try {
+      await addTracksMutation.mutateAsync({
+        playlist_id,
+        uris: [`spotify:track:${track.id}`]
+      });
+      
+      const trackId = track.id;
+      setAddedTracks(prev => new Set(prev).add(trackId));
+      
+      setTimeout(() => {
+        setAddedTracks(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(trackId);
+          return newSet;
+        });
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Failed to add track:', error);
+    }
+  };
 
   return (
     <>
-    {list.map((track, index) => (
-      <TrackRow className="track-row" key={'track-name-' + index}>
-        <TrackInfo>  
-            <img src={track.album.images? track.album.images[0].url : ''} alt={track.album? track.album.name : ''} width={40} height={40}/>
-            <TrackTextInfo>
-              <Typography variant='body1'> {track.name} </Typography>
-              <Typography variant='body1'>{track.artists? track.artists[0].name : ''}</Typography>
-            </TrackTextInfo>
-        </TrackInfo>
+    {list.map((track, index) => {
+      if (!track.id) return null;
+      
+      const isAdded = addedTracks.has(track.id);
+      const isLoading = addTracksMutation.isPending && addTracksMutation.variables?.uris?.[0] === `spotify:track:${track.id}`;
+      
+      return (
+        <TrackRow className="track-row" key={'track-name-' + index}>
+          <TrackInfo>  
+              <img src={track.album.images? track.album.images[0].url : ''} alt={track.album? track.album.name : ''} width={40} height={40}/>
+              <TrackTextInfo>
+                <Typography variant='body1'> {track.name} </Typography>
+                <Typography variant='body1'>{track.artists? track.artists[0].name : ''}</Typography>
+              </TrackTextInfo>
+          </TrackInfo>
 
-        <AlbumName>
-          <Typography variant='body1'>{track.album? track.album.name : ''}</Typography>
-        </AlbumName>
+          <AlbumName>
+            <Typography variant='body1'>{track.album? track.album.name : ''}</Typography>
+          </AlbumName>
 
-        <ButtonContainer>
-          <Button>Add</Button>
-        </ButtonContainer>
-      </TrackRow>
-      ))} 
+          <ButtonContainer>
+            <Button 
+              onClick={() => handleAddTrack(track)}
+              disabled={isLoading || isAdded || !track.id}
+              variant={isAdded ? "outlined" : "contained"}
+              size="small"
+            >
+              {isLoading ? (
+                <CircularProgress size={16} />
+              ) : isAdded ? (
+                "Added"
+              ) : (
+                "Add"
+              )}
+            </Button>
+          </ButtonContainer>
+        </TrackRow>
+      );
+    }).filter(Boolean)}
     </>
-)}
+  );
+};

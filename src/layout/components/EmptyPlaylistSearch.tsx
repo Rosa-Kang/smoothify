@@ -5,6 +5,7 @@ import { SEARCH_TYPE } from '../../models/search';
 import { SearchResultList } from './SearchResultList';
 import SearchIcon from '@mui/icons-material/Search';
 import { useInView } from "react-intersection-observer";
+import { useParams } from 'react-router';
 
 const EmptyPlaylistSearchContainer = styled('div') ({
       display: 'flex',
@@ -28,6 +29,7 @@ const LoadingTrigger = styled('div')({
 });
 
 const EmptyPlaylistSearch = () => {
+  const { id: playlist_id } = useParams<{id: string}>();
   const [keyword, setKeyword] = useState<string>('');
   const {
     data, 
@@ -69,6 +71,7 @@ const EmptyPlaylistSearch = () => {
             <SearchResultList 
               key={`search-result-page-${pageIndex}`} 
               list={page.tracks.items} 
+              playlist_id={playlist_id || ""}
             />
           );
         })}

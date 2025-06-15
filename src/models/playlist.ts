@@ -192,3 +192,13 @@ export interface SimplifiedAudiobook {
   uri: string,
   total_chapters : number,
 }
+
+export interface AddTracksToPlaylistRequest {
+    playlist_id: string;
+    uris: string[];
+    position?: number; 
+}
+
+export interface AddTracksToPlaylistResponse {
+    snapshot_id: string;
+}
