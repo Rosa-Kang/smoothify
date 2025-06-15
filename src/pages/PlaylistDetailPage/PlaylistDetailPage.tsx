@@ -186,6 +186,7 @@ const isUnauthorized =
                       <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>Album</TableCell>
                       <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>Date Added</TableCell>
                       <TableCell>Duration</TableCell>
+                      <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
     

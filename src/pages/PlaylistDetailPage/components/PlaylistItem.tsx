@@ -1,7 +1,10 @@
-import { TableCell, TableRow } from "@mui/material";
+import { CircularProgress, IconButton, Menu, MenuItem, TableCell, TableRow } from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Episode, PlaylistTrack, Track } from "../../../models/playlist";
 import { useState } from "react";
+import { useParams } from "react-router";
+import { useRemoveTracksFromPlaylist } from "../../../hooks/useRemoveTracksFromPlaylist";
 
 interface DesktopPlaylistItemProps {
     index: number,
@@ -9,7 +12,10 @@ interface DesktopPlaylistItemProps {
 }
 
 const DesktopPlaylistItem = ({item , index}:DesktopPlaylistItemProps) => {
+    const { id: playlist_id } = useParams<{id: string}>();
     const [isHovered, setIsHovered] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const removeTrackMutation = useRemoveTracksFromPlaylist();
 
     const isEpisode = (track:Track | Episode) : track is Episode => {
       return "description" in track;
@@ -38,6 +44,33 @@ const DesktopPlaylistItem = ({item , index}:DesktopPlaylistItemProps) => {
 
     const dateAdded = item.added_at ? formatDateAdded(item.added_at) : "unknown";
 
+        const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDeleteTrack = async () => {
+        if (!item.track?.uri || !playlist_id) return;
+
+        try {
+            await removeTrackMutation.mutateAsync({
+                playlist_id: playlist_id,
+                tracks: [{
+                    uri: item.track.uri,
+                    positions: [index - 1] // 0-based index
+                }]
+            });
+            handleMenuClose();
+        } catch (error) {
+            console.error('Failed to delete track:', error);
+        }
+    };
+
+    const isLoading = removeTrackMutation.isPending;
   
   return (
     <TableRow 
@@ -51,6 +84,49 @@ const DesktopPlaylistItem = ({item , index}:DesktopPlaylistItemProps) => {
       <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>{isEpisode(item.track)? "N/A" : item.track?.album?.name} </TableCell>
       <TableCell sx={{  display: { xs: 'none', lg: 'table-cell' }}}>{dateAdded}</TableCell>
       <TableCell>{duration}</TableCell>
+      <TableCell sx={{ width: '48px', padding: '8px' }}>
+        {isHovered && (
+          <>
+            <IconButton
+              size="small"
+              onClick={handleMenuOpen}
+              disabled={isLoading}
+              sx={{ 
+                opacity: 0.7, 
+                '&:hover': { opacity: 1 },
+                visibility: isHovered ? 'visible' : 'hidden'
+              }}
+            >
+              {isLoading ? (
+                <CircularProgress size={16} />
+              ) : (
+                <MoreHorizIcon />
+              )}
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem 
+                onClick={handleDeleteTrack}
+                disabled={isLoading}
+                sx={{ color: 'error.main' }}
+              >
+                Remove from this playlist
+              </MenuItem>
+            </Menu>
+          </>
+        )}
+      </TableCell>
     </TableRow>
   )
 }

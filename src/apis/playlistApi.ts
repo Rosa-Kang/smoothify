@@ -1,4 +1,4 @@
-import { GetPlaylistResponse, GetCurrentUserPlaylistsRequest, GetCurrentUserPlaylistsResponse, GetPlaylistItemsRequest, GetPlaylistRequest, GetPlaylistItemsResponse, CreatePlaylistRequest, AddTracksToPlaylistRequest, AddTracksToPlaylistResponse } from "../models/playlist"
+import { GetPlaylistResponse, GetCurrentUserPlaylistsRequest, GetCurrentUserPlaylistsResponse, GetPlaylistItemsRequest, GetPlaylistRequest, GetPlaylistItemsResponse, CreatePlaylistRequest, AddTracksToPlaylistRequest, AddTracksToPlaylistResponse, RemoveTracksFromPlaylistRequest, RemoveTracksFromPlaylistResponse } from "../models/playlist"
 import { api } from "../utils/api"
 
 export const getCurrentUserPlaylists = async({
@@ -65,3 +65,20 @@ export const addPlaylist = async(params: AddTracksToPlaylistRequest): Promise<Ad
         throw new Error(`Failed to add tracks to playlist: ${error}`);
     }
 }
+
+export const removeTracksFromPlaylist = async(params: RemoveTracksFromPlaylistRequest): Promise<RemoveTracksFromPlaylistResponse> => {
+    const { playlist_id, tracks, snapshot_id } = params;
+    
+    try {
+        const response = await api.delete(`/playlists/${playlist_id}/tracks`, {
+            data: {
+                tracks,
+                ...(snapshot_id && { snapshot_id })
+            }
+        });
+        
+        return response.data;
+    } catch (error) {
+        throw new Error(`Failed to remove tracks from playlist: ${error}`);
+    }
+};

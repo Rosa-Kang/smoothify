@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { AddTracksToPlaylistRequest } from "../models/playlist"
-import { addPlaylist } from "../apis/playlistApi";
+import { RemoveTracksFromPlaylistRequest } from "../models/playlist"
+import { removeTracksFromPlaylist } from "../apis/playlistApi";
 
-export const useAddTracksToPlaylist = () => {
+export const useRemoveTracksFromPlaylist = () => {
     const queryClient = useQueryClient();
     
     return useMutation({
-        mutationFn: (params: AddTracksToPlaylistRequest) => {
-            return addPlaylist(params);
+        mutationFn: (params: RemoveTracksFromPlaylistRequest) => {
+            return removeTracksFromPlaylist(params);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['playlist-items'] });
@@ -15,7 +15,7 @@ export const useAddTracksToPlaylist = () => {
             queryClient.invalidateQueries({ queryKey: ['currentUserPlaylists'] });
         },
         onError: (error) => {
-            console.error('Failed to add track to playlist:', error);
+            console.error('Failed to remove track from playlist:', error);
         }
     });
 };

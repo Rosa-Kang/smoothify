@@ -202,3 +202,16 @@ export interface AddTracksToPlaylistRequest {
 export interface AddTracksToPlaylistResponse {
     snapshot_id: string;
 }
+
+export interface RemoveTracksFromPlaylistRequest {
+    playlist_id: string;
+    tracks: Array<{
+        uri: string;
+        positions?: number[];
+    }>;
+    snapshot_id?: string;
+}
+
+export interface RemoveTracksFromPlaylistResponse {
+    snapshot_id: string;
+}
