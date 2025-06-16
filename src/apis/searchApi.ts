@@ -2,6 +2,7 @@ import axios from "axios"
 import { SPOTIFY_BASEURL } from "../configs/commonConfig"
 import { BrowseCategoriesRequest, BrowseCategoriesResponse, SearchRequestParams, SearchResponse } from "../models/search"
 import { useQuery } from "@tanstack/react-query";
+import { CLIENT_ID } from "../configs/authConfig";
 
 export const searchItemsByKeyword = async(token:string, params:SearchRequestParams):Promise<SearchResponse> => {
     try {   
@@ -26,13 +27,23 @@ export const searchItemsByKeyword = async(token:string, params:SearchRequestPara
     }
 }
 
-export const browseCategories = async({limit, offset, locale}:BrowseCategoriesRequest):Promise<BrowseCategoriesResponse> => {
-    try {
-        const response = await axios.get(`${SPOTIFY_BASEURL}/browse/categories`, {
-            params: {limit, offset, locale}
-        });
-        return response.data;
-    } catch (error) {
-        throw new Error(`Failed to fetch categories..`)
-    }
-}
+export const browseCategories = async ({
+  limit,
+  offset,
+  locale,
+  accessToken,
+}: BrowseCategoriesRequest & { accessToken: string | undefined }): Promise<BrowseCategoriesResponse> => {
+  try {
+    const response = await axios.get(`${SPOTIFY_BASEURL}/browse/categories`, {
+      params: { limit, offset, locale },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Failed to fetch categories..`);
+  }
+};
