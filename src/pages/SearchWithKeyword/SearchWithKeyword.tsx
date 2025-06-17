@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
+import { SEARCH_TYPE } from "../../models/search"; 
 import { useSearchItemsByKeyword } from "../../hooks/uesSearchItemsByKeyword";
-import { SEARCH_TYPE } from "../../models/search";
 
 const SearchWithKeyword = () => {
   const { keyword = '' } = useParams<{ keyword: string }>();
