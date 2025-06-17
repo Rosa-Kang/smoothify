@@ -9,28 +9,28 @@ import {
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 interface ArtistGridProps {
-  artists: ExtendedArtists[]
-  title?: string           
-  initialCount?: number    
+  artists: ExtendedArtists[],
+  initialCount?: number,
+  keyword: string    
 }
 
 const ArtistGrid = ({
   artists,
-  title = 'Top Artists',
   initialCount = 6,
+  keyword
 }: ArtistGridProps) => {
   const [showAll, setShowAll] = useState(false)
-  const visible = showAll ? artists : artists.slice(0, initialCount)
+  const visible = showAll ? artists : artists?.slice(0, initialCount)
 
   console.log(artists)
 
   return (
-    <Box sx={{ p: 2, marginTop:'2.5rem'}}>
+    <Box sx={{ padding:'2.5rem 1rem 6.5rem'}}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Typography component="h2" fontWeight="bold" sx={{fontSize:'32px', marginBottom:'1rem'}}>
-          {title}
+        <Typography component="h2" fontWeight="bold" sx={{fontSize:'45px', marginBottom:'1rem'}}>
+          Top Artists {`for  '${keyword}'`}
         </Typography>
-        {artists.length > initialCount && (
+        {artists?.length > initialCount && (
           <Button size="small" onClick={() => setShowAll(!showAll)}>
             {showAll ? 'Show Less' : 'Show All'}
           </Button>

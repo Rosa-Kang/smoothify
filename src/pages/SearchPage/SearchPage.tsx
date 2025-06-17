@@ -27,7 +27,7 @@ const SearchPage = () => {
 
   return (
     <div>
-        <Searchbar  />
+        <Searchbar  onSelect={handleSelect}/>
         <BrowseCategoryCards 
           data={categories}
           fetchNextPage={fetchNextPage}

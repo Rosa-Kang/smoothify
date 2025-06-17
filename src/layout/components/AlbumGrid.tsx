@@ -3,14 +3,15 @@ import { Box, styled, Typography, Button } from '@mui/material'
 import { Album } from '../../models/playlist'
 
 interface AlbumGridProps {
-  albums: Album[]
+  albums: Album[],
+  keyword: string 
 }
 
 const AlbumGridContainer = styled('div')({
   margin: '0 2rem',
 })
 
-const AlbumGrid = ({ albums }: AlbumGridProps) => {
+const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
   const initialCount = 10
   const [showAll, setShowAll] = useState(false)
   const visible = showAll ? albums : albums.slice(0, initialCount)
@@ -21,9 +22,9 @@ const AlbumGrid = ({ albums }: AlbumGridProps) => {
         <Typography
           variant="h2"
           fontWeight="bold"
-          sx={{ fontSize: '32px', marginBottom: '1rem' }}
+          sx={{ fontSize: '45px', marginBottom: '1rem' }}
         >
-          Top Albums
+          Top Albums {`for  '${keyword}'`}
         </Typography>
 
         {albums.length > initialCount && (
