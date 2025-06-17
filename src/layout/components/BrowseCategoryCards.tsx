@@ -62,7 +62,7 @@ const BrowseCategoryCards = ({
 
       <Grid container spacing={2}>
         {categories.map((category) => (
-          <Grid item size={{xs:12, sm:6, md:4}} key={category.id}>
+          <Grid  size={{xs:12, sm:6, md:4}} key={category.id}>
             <Box
               component="div"
               onClick={() => onSelect(category.name)}

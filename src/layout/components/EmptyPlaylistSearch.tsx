@@ -1,6 +1,6 @@
 import { InputAdornment, styled, TextField, Typography, CircularProgress } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import { useSearchItemsByKeyword } from '../../hooks/uesSearchItemsbyKeyword';
+import { useSearchItemsByKeyword } from '../../hooks/uesSearchItemsByKeyword';
 import { SEARCH_TYPE } from '../../models/search';
 import { SearchResultList } from './SearchResultList';
 import SearchIcon from '@mui/icons-material/Search';

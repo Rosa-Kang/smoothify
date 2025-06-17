@@ -21,7 +21,6 @@ const SearchPage = () => {
   if (error) return <div>Error loading categories</div>;
 
   const categories = data?.pages.flatMap(page => page.categories.items) ?? [];
-  console.log('pages length:', data?.pages.length, categories);
 
   const handleSelect = (keyword: string) =>
   navigate(`/search/${encodeURIComponent(keyword)}`);
