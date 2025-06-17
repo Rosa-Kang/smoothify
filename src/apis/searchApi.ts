@@ -33,6 +33,7 @@ export const browseCategories = async ({
   locale,
   accessToken,
 }: BrowseCategoriesRequest & { accessToken: string | undefined }): Promise<BrowseCategoriesResponse> => {
+  console.log("📦 accessToken:", accessToken);
   try {
     const response = await axios.get(`${SPOTIFY_BASEURL}/browse/categories`, {
       params: { limit, offset, locale },
@@ -43,7 +44,6 @@ export const browseCategories = async ({
     });
     return response.data;
   } catch (error) {
-    console.error(error);
     throw new Error(`Failed to fetch categories..`);
   }
 };

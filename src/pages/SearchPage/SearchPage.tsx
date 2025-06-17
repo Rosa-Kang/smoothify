@@ -1,33 +1,39 @@
 import { useBrowseCategories } from '../../hooks/useBrowseCategories';
 import { useClientCredentialToken } from '../../hooks/useClientCredentialToken';
+import BrowseCategoryCards from '../../layout/components/BrowseCategoryCards';
+import Searchbar from '../../layout/components/Searchbar';
+
 
 const SearchPage = () => {
   const accessToken = useClientCredentialToken();
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useBrowseCategories(accessToken, 20);
 
-  const { data , isLoading, error } = useBrowseCategories(accessToken, 20);
+  if (isLoading) return <div>Loading...</div>;
+  if (error)     return <div>Error loading categories</div>;
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading categories</div>;
 
-  console.log(data)
+  console.log(data);
+
+  const categories = data?.pages[0]?.categories.items ?? [];
 
   return (
     <div>
-      Search..
-      {/* //what do you want to play? */}
-
-      {/* Browse all */}
-      {data?.items?.map((category) => (
-        <div key={category.id}>
-          <img
-            src={category.icons[0]?.url}
-            alt={category.name}
-            width={100}
-            height={100}
-          />
-          <p>{category.name}</p>
-        </div>
-      ))}
+        <Searchbar  />
+        <BrowseCategoryCards 
+          data={categories}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+           />
     </div>
   );
 };

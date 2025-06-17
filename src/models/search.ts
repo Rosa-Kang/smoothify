@@ -36,7 +36,9 @@ export interface BrowseCategoriesRequest extends GetCurrentUserPlaylistsRequest 
   locale? : string
 }
 
-export type BrowseCategoriesResponse = ApiResponse<BrowseCategories>;
+export interface BrowseCategoriesResponse {
+  categories: ApiResponse<BrowseCategories>;
+}
 
 export interface BrowseCategories {
     href: string,
