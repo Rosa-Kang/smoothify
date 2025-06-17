@@ -114,7 +114,7 @@ const BrowseCategoryCards = ({
         ))}
 
         {hasNextPage && (
-          <Grid item size={{xs:12}}>
+          <Grid size={{xs:12}}>
             <LoadingTrigger ref={ref}>
               {isFetchingNextPage && <CircularProgress size={24} />}
             </LoadingTrigger>
