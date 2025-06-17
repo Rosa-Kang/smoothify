@@ -4,7 +4,7 @@ import AlbumGrid from '../../layout/components/AlbumGrid';
 import ArtistGrid from '../../layout/components/ArtistGrid';
 import BrowseCategoryCards from '../../layout/components/BrowseCategoryCards';
 import { SEARCH_TYPE } from '../../models/search';
-import { useSearchItemsByKeyword } from '../../hooks/uesSearchItemsByKeyword';
+import { useSearchItemsByKeyword } from '../../hooks/useSearchItemsByKeyword';
 
 const SearchWithKeyword = () => {
   const { keyword = '' } = useParams<{ keyword: string }>();
