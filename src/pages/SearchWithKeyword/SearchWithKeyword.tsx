@@ -34,44 +34,15 @@ const SearchWithKeyword = () => {
   const albums  = flat(p => p.albums?.items);
   const artists = flat(p => p.artists?.items);
 
-  // const trackCategories = tracks
-  //   .filter(t => t.name.toLowerCase() !== keyword.toLowerCase())    
-  //   .map(t => ({
-  //     href : t.external_urls?.spotify ?? t.href ?? '',           
-  //     id   : t.id,                                                  
-  //     name : t.name,                                                
-  //     icons: (t.album?.images ?? []).map(img => ({                 
-  //       url   : img.url,
-  //       width : img.width,
-  //       height: img.height,
-  //     })),
-  //   }));
-
   return (
     <div className="space-y-10">
       {albums.length > 0 && (
-        <>
-          <h2 className="text-2xl font-bold">Albums</h2>
           <AlbumGrid albums={albums} />
-        </>
       )}
 
       {artists.length > 0 && (
-        <>
-          <h2 className="text-2xl font-bold">Artists</h2>
           <ArtistGrid artists={artists} />
-        </>
       )}
-
-      {/* {trackCategories.length > 0 && (
-        <BrowseCategoryCards
-          data={trackCategories}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          onSelect={(trackName) => navigate(`/search/${trackName}`)}
-        />
-      )} */}
     </div>
   );
 };

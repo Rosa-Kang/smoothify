@@ -45,3 +45,13 @@ export interface Artist {
     type: "artist";
     uri: string;
 }
+
+export interface ExtendedArtists extends Artist {
+        popularity?: number,
+        images : Image[],
+        genres?: string[] | null,
+        followers? : {
+                href: string | null,
+                total: number | null
+        }
+}
