@@ -1,4 +1,4 @@
-import { InputAdornment, TextField, Typography } from '@mui/material'
+import { Box, InputAdornment, TextField, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 
@@ -10,12 +10,12 @@ const Searchbar = () => {
     }
 
     return (
-        <div>
+        <Box component="div">
             <TextField
                 onChange={handleSearchKeyword}
                 value={keyword}
                 placeholder="What do you want to play?"
-                sx={{ width:  '346px', marginLeft:'24px' }}
+                sx={{ width:  '340px', marginLeft:'24px', backgroundColor:'rgba(255, 255, 255, 0.23)'}}
                 slotProps={{
                     input: {
                         startAdornment: (
@@ -25,7 +25,7 @@ const Searchbar = () => {
                         ),
                     },
                 }} />
-        </div>
+        </Box>
     )
 }
 
