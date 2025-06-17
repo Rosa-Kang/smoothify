@@ -1,21 +1,30 @@
-// layout/components/BrowseCategoryCards.tsx
-import { Grid, Typography, Box } from '@mui/material';
-import { useEffect, useRef } from 'react';
+ import { Grid, Typography, Box, CircularProgress, styled } from '@mui/material';
+import { useEffect } from 'react';
 import { BrowseCategories } from '../../models/search';
+import { useInView } from 'react-intersection-observer';
 
 interface BrowseCategoryCardsProps {
-  data: BrowseCategories[];              
+  data: BrowseCategories[];    
   fetchNextPage: () => void;
   hasNextPage: boolean | undefined;
   isFetchingNextPage: boolean;
+  onSelect : (keyword : string) => void
 }
+
+const LoadingTrigger = styled('div')({
+  height: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
 
 const BrowseCategoryCards = ({
   data: categories,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
-}: BrowseCategoryCardsProps) => {
+  onSelect
+}: BrowseCategoryCardsProps) => { 
   const getRandomColor = (seed: string) => {
     const colors = [
     '#FF6F91', '#FFD93D', '#6A93FF', '#00D2A8',
@@ -27,20 +36,19 @@ const BrowseCategoryCards = ({
       hash = seed.charCodeAt(i) + ((hash << 5) - hash);
     return colors[Math.abs(hash) % colors.length];
   };
+ 
+  const { ref, inView } = useInView({ 
+    rootMargin: '100px 0px',
+    threshold: 0,
+    triggerOnce: false,
+  });
 
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    if (!sentinelRef.current || !hasNextPage) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => entry.isIntersecting && fetchNextPage(),
-      { threshold: 1 },
-    );
-
-    observer.observe(sentinelRef.current);
-    return () => observer.disconnect();
-  }, [hasNextPage, fetchNextPage]);
-
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+ 
   return (
     <Box sx={{ px: 3, py: 4 }}>
       <Typography
@@ -52,11 +60,12 @@ const BrowseCategoryCards = ({
         Browse all
       </Typography>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         {categories.map((category) => (
           <Grid item size={{xs:12, sm:6, md:4}} key={category.id}>
             <Box
-              component="section"
+              component="div"
+              onClick={() => onSelect(category.name)}
               sx={{
                 position: 'relative',
                 bgcolor: getRandomColor(category.id),
@@ -104,19 +113,14 @@ const BrowseCategoryCards = ({
           </Grid>
         ))}
 
-        {/* sentinel: 보이면 fetchNextPage() */}
         {hasNextPage && (
-          <Grid item xs={12}>
-            <Box ref={sentinelRef} sx={{ height: 1 }} />
+          <Grid item size={{xs:12}}>
+            <LoadingTrigger ref={ref}>
+              {isFetchingNextPage && <CircularProgress size={24} />}
+            </LoadingTrigger>
           </Grid>
         )}
       </Grid>
-
-      {isFetchingNextPage && (
-        <Typography align="center" mt={2}>
-          Loading more…
-        </Typography>
-      )}
     </Box>
   );
 };

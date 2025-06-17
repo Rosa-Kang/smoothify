@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useBrowseCategories } from '../../hooks/useBrowseCategories';
 import { useClientCredentialToken } from '../../hooks/useClientCredentialToken';
 import BrowseCategoryCards from '../../layout/components/BrowseCategoryCards';
@@ -6,6 +7,7 @@ import Searchbar from '../../layout/components/Searchbar';
 
 const SearchPage = () => {
   const accessToken = useClientCredentialToken();
+  const navigate = useNavigate();
   const {
     data,
     isLoading,
@@ -16,14 +18,13 @@ const SearchPage = () => {
   } = useBrowseCategories(accessToken, 20);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error)     return <div>Error loading categories</div>;
-
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading categories</div>;
 
-  console.log(data);
+  const categories = data?.pages.flatMap(page => page.categories.items) ?? [];
+  console.log('pages length:', data?.pages.length, categories);
 
-  const categories = data?.pages[0]?.categories.items ?? [];
+  const handleSelect = (keyword: string) =>
+  navigate(`/search/${encodeURIComponent(keyword)}`);
 
   return (
     <div>
@@ -33,6 +34,7 @@ const SearchPage = () => {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          onSelect={handleSelect}
            />
     </div>
   );

@@ -39,6 +39,7 @@ const ContentBox = styled(Box)(({theme}) => ({
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
     width: "100%",
+    height: '100vh',
     padding: "16px 8px",
     marginBottom: "8px",
     marginRight: "8px"
