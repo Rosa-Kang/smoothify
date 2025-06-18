@@ -33,7 +33,6 @@ export const browseCategories = async ({
   locale,
   accessToken,
 }: BrowseCategoriesRequest & { accessToken: string | undefined }): Promise<BrowseCategoriesResponse> => {
-  console.log("📦 accessToken:", accessToken);
   try {
     const response = await axios.get(`${SPOTIFY_BASEURL}/browse/categories`, {
       params: { limit, offset, locale },

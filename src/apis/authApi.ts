@@ -50,10 +50,10 @@ export const exchangeToken = async(code:string, codeVerifier:string):Promise<Exc
             code_verifier: codeVerifier,
         })
 
-        console.log('Request body:', Object.fromEntries(body));
-        console.log('CODE:', code);
-        console.log('CODE VERIFIER:', codeVerifier);
-        console.log('URI:', REDIRECT_URI);
+        // console.log('Request body:', Object.fromEntries(body));
+        // console.log('CODE:', code);
+        // console.log('CODE VERIFIER:', codeVerifier);
+        // console.log('URI:', REDIRECT_URI);
         
         const response = await axios.post(url, body, {
             headers: {

@@ -22,8 +22,6 @@ const ArtistGrid = ({
   const [showAll, setShowAll] = useState(false)
   const visible = showAll ? artists : artists?.slice(0, initialCount)
 
-  console.log(artists)
-
   return (
     <Box sx={{ padding:'2.5rem 1rem 6.5rem'}}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
