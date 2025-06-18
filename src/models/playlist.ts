@@ -216,3 +216,12 @@ export interface RemoveTracksFromPlaylistRequest {
 export interface RemoveTracksFromPlaylistResponse {
     snapshot_id: string;
 }
+
+export interface GetAlbumTracksRequest {
+  id: string,
+  market?: string,
+  limit?: number,
+  offset?: number
+}
+
+export type GetAlbumTracksResponse  = ApiResponse<Track>

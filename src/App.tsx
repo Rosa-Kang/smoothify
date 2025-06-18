@@ -3,6 +3,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Loading from './common/components/Loading';
 import OAuthCallback from './OAuthCallback';
+import AlbumTrackPage from './pages/TrackPage/AlbumTrackPage';
 
 const AppLayout = React.lazy(() => import('./layout/AppLayout'));
 const HomePage = React.lazy(()=> import('./pages/Home/HomePage'));
@@ -22,6 +23,7 @@ function App() {
             <Route path="search/:keyword" element={<SearchWithKeyword/>}  />
             <Route path="playlist/:id" element={<PlaylistDetailPage/>}  /> 
             <Route path="playlist" element={<PlaylistPage/>}  /> 
+            <Route path="albums/:id" element={<AlbumTrackPage/>}  /> 
         </Route>
       </Routes>
     </Suspense>

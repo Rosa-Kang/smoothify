@@ -1,22 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { browseCategories } from '../apis/searchApi';
-import { BrowseCategoriesResponse } from '../models/search';
-
-// export const useBrowseCategories = (
-//   accessToken: string | undefined,
-//   limit: number,
-//   offset = 0
-// ) => {
-//   return useQuery({
-//     queryKey: ['categories', limit, offset],
-//     queryFn: () => browseCategories({ limit, offset, accessToken }),
-//     enabled: !!accessToken,
-//     staleTime: 1000 * 60 * 5,
-//     retry: false,
-//   });
-// };
-
-
 
 const offsetFromNextUrl = (next?: string | null): number | undefined => {
   if (!next) return undefined;

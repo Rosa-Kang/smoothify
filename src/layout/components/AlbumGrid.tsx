@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Box, styled, Typography, Button } from '@mui/material'
-import { Album } from '../../models/playlist'
+import { Album, Track } from '../../models/playlist'
+import MusicIcon from '../../assets/music.png'
+import { useNavigate } from 'react-router'
 
 interface AlbumGridProps {
   albums: Album[],
-  keyword: string 
+  keyword: string,
 }
 
 const AlbumGridContainer = styled('div')({
@@ -15,6 +17,11 @@ const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
   const initialCount = 10
   const [showAll, setShowAll] = useState(false)
   const visible = showAll ? albums : albums.slice(0, initialCount)
+  const navigate = useNavigate(); 
+
+  const goToAlbum = (id: string) => {
+      navigate(`/albums/${id}`);
+  }
 
   return (
     <AlbumGridContainer className="album-container">
@@ -37,6 +44,7 @@ const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
       <Box display="flex" flexWrap="wrap" gap={2}>
         {visible.map((album, i) => (
           <Box
+            onClick={() => goToAlbum(album.id)}
             key={album.id ?? `${album.name}-${i}`}
             flexBasis={{ xs: '100%', sm: i === 0 ? '45%' : '15%' }}
             sx={{
@@ -47,7 +55,7 @@ const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
             }}
           > 
             <img
-              src={album.images[0]?.url}
+              src={album.images[0]?.url? album.images[0].url : MusicIcon}
               alt={album.name}
               style={{
                 width: '100%',
@@ -85,7 +93,7 @@ const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
               </Typography>
               <Typography variant="body2">
                 {album.total_tracks} tracks
-              </Typography>
+              </Typography> 
             </Box>
           </Box>
         ))}

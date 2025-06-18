@@ -1,5 +1,5 @@
-// ArtistGrid.tsx
 import { useState } from 'react'
+import MusicIcon from '../../assets/music.png'
 import { ExtendedArtists } from '../../models/commonType'
 import {
   Box, Grid, Card, CardMedia, CardContent,
@@ -48,10 +48,10 @@ const ArtistGrid = ({
                 opacity: 1,
                 transform: 'translateY(0)',
               },
-            }}>
-              {a.images?.[0]?.url && (
-                <CardMedia component="img" height="200" image={a.images[0].url} alt={a.name} />
-              )}
+            }}> 
+              
+              <CardMedia component="img" height="200" image={a.images[0]?.url?  a.images[0].url : MusicIcon} alt={a.name} />
+            
               <CardContent>
                 <Typography variant="h6" fontWeight="bold" noWrap>{a.name}</Typography>
                 {a.genres && 
