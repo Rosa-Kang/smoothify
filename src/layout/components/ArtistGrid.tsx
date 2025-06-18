@@ -7,6 +7,7 @@ import {
   IconButton
 } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { useNavigate } from 'react-router';
 
 interface ArtistGridProps {
   artists: ExtendedArtists[],
@@ -20,7 +21,12 @@ const ArtistGrid = ({
   keyword
 }: ArtistGridProps) => {
   const [showAll, setShowAll] = useState(false)
-  const visible = showAll ? artists : artists?.slice(0, initialCount)
+  const visible = showAll ? artists : artists?.slice(0, initialCount);
+  const navigate = useNavigate(); 
+
+  const goToArtist = (id: string) => {
+      navigate(`/artists/${id}`);
+  }
 
   return (
     <Box sx={{ padding:'2.5rem 1rem 6.5rem'}}>
@@ -38,17 +44,23 @@ const ArtistGrid = ({
       <Grid container spacing={3}>
         {visible.map(a => (
           <Grid size={{xs:12, sm:6, md:4, lg:3}} key={a.id}>
-            <Card sx={{
-              position: 'relative',
-              height: '100%',
-              borderRadius: 2,
-              boxShadow: 3,
-              overflow: 'hidden',
-              '&:hover .play-btn': {
-                opacity: 1,
-                transform: 'translateY(0)',
-              },
-            }}> 
+            <Card 
+              onClick={() => goToArtist(a.id)}
+              sx={{
+                position: 'relative',
+                height: '100%',
+                borderRadius: 2,
+                boxShadow: 3,
+                overflow: 'hidden',
+                '&:hover' : {
+                  'cursor' : 'pointer'
+                },
+                '&:hover .play-btn': {
+                  opacity: 1,
+                  transform: 'translateY(0)',
+                },
+              }}
+            > 
               
               <CardMedia component="img" height="200" image={a.images[0]?.url?  a.images[0].url : MusicIcon} alt={a.name} />
             

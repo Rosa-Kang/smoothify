@@ -41,7 +41,10 @@ const ContentBox = styled(Box)(({theme}) => ({
     width: "100%",
     padding: "16px 8px",
     marginBottom: "8px",
-    marginRight: "8px"
+    marginRight: "8px",
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column'
 }));
 
 const NavList = styled("ul")({

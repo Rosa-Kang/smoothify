@@ -26,7 +26,7 @@ const TrackRow = styled('div')({
 
 const TrackInfo = styled('div')({
   display: 'flex',
-  flex: 0.7,
+  flex: 0.9,
   justifyContent: 'space-between',
   alignItems: 'center',
   '&:hover' : {'cursor' : 'pointer'},
@@ -101,7 +101,7 @@ export const TrackList = ({ list, playlist_id }: TrackListProps) => {
                 />
               ) : (
                 <Typography variant="body1" sx={hideOnMobile}>
-                  {track.track_number}
+                  {idx + 1}
                 </Typography>
               )}
 

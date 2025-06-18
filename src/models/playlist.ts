@@ -225,3 +225,8 @@ export interface GetAlbumTracksRequest {
 }
 
 export type GetAlbumTracksResponse  = ApiResponse<Track>
+
+export type GetArtistsTracksRequest = Omit<GetAlbumTracksRequest, "offset" >
+export interface GetArtistsTracksResponse {
+  tracks: Track[]
+}
