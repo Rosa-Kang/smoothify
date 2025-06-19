@@ -31,13 +31,15 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSelect }) => {
         placeholder="What do you want to play?"
         sx={{
           width: 340,
-          ml: 3,
+          ml: { xs: 0, md: 3 },
           bgcolor: 'rgba(255, 255, 255, 0.23)',
+          borderRadius: '24px',
+          '&> div': {borderRadius: '24px'}
         }}
         slotProps={{
           input: {
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" >
                 <SearchIcon />
               </InputAdornment>
             ),

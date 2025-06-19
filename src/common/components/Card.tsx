@@ -4,7 +4,8 @@ import PlayButton from "./PlayButton";
 interface CardProps {
   name: string;
   image: string;
-  artistName: undefined | string
+  artistName: undefined | string,
+  externalLink: undefined | string,
 }
 
 const CardContainer = styled('div')(({theme}) => ({
@@ -35,7 +36,7 @@ const AlbumThumbnail = styled('img')({
   marginBottom: '1rem'
 })
 
-const ButtonWrapper = styled('div')({
+const ButtonWrapper = styled('a')({
   position: 'absolute',
   bottom: '1.5rem',
   right: '8px',
@@ -43,13 +44,17 @@ const ButtonWrapper = styled('div')({
   transition: 'ease-in .3s'
 })
 
-const Card = ({ image, name, artistName }:CardProps) => {
+const Card = ({ image, name, artistName, externalLink }:CardProps) => {
   return (
     <CardContainer>
       <ImageContainer>
         <AlbumThumbnail src={image} />
-        <ButtonWrapper className="btn-overlay">
-          <PlayButton />
+        <ButtonWrapper 
+          className="btn-overlay" 
+          href={externalLink}
+          target="_blank"
+          rel="noopener noreferrer">
+          <PlayButton/>
         </ButtonWrapper>
       </ImageContainer>
       <Typography variant="h2">{name || "No name"}</Typography>

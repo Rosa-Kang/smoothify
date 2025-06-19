@@ -54,7 +54,7 @@ const Navbar = () => {
   });
 
   return (
-    <Box display='flex' justifyContent='flex-end' alignItems='center' height='64px'>
+    <Box display='flex' justifyContent='flex-end' alignItems='center' height='64px' mb={3}>
       {user && isLoggedIn ? (
         <ProfileContainer className='profile-container'>
           <Typography variant='body2' color='primary' marginRight='0.25rem'>Hi👋, {user.display_name?.split(' ')[0]}</Typography>

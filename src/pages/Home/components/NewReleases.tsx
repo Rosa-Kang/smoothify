@@ -15,6 +15,8 @@ const NewReleases = () => {
     return <ErrorMessage errorMessage={error.message} />
   }
 
+  console.log(data)
+
   return (
     <div>
         <Typography variant='h1' paddingTop='8px' paddingLeft='12px' fontSize={28}>
@@ -24,12 +26,13 @@ const NewReleases = () => {
         {data && data.albums.items.length>0 ? 
          (
           <Grid container spacing={2}>
-            {data.albums.items.map((album) => (
-              <Grid size={{xs:6, sm:4, md:2}} key={album.id}>
+            {data.albums.items.map((item) => (
+              <Grid size={{xs:6, sm:4, md:2}} key={item.id}>
                   <Card 
-                    image={album.images[0].url}
-                    name={album.name}
-                    artistName={album.artists[0].name}
+                    image={item.images[0].url}
+                    name={item.name}
+                    artistName={item.artists[0].name}
+                    externalLink = {item.external_urls.spotify}
                   />
               </Grid>
             )
