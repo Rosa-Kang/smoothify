@@ -1,6 +1,5 @@
 import { useParams } from "react-router";
 import { useClientCredentialToken } from "../../hooks/useClientCredentialToken";
-import { useLatestPlaylistId } from "../../hooks/useLatestPlaylistId";
 import { useGetArtistsTrack } from "../../hooks/useGetArtistsTrack";
 import Loading from "../../common/components/Loading";
 import { Box, Typography } from "@mui/material";
@@ -11,7 +10,6 @@ import TrackListHeader from "../../layout/components/TrackListHeader";
 const ArtistTrackPage = () => {
   const { id } = useParams<{ id: string }>();
   const accessToken = useClientCredentialToken();
-  const playlist_id = useLatestPlaylistId();  
   const { data: tracks, isLoading, error } = useGetArtistsTrack({ id, accessToken });
   const { data: artistInfo }                = useGetArtistInfo({ id, accessToken });
 
@@ -37,7 +35,7 @@ const ArtistTrackPage = () => {
       )}
       </Box>
       <Box my={3} sx={{  maxHeight: 300, overflowY: 'auto',  pr: 1}} className="artists-tracks">
-      {tracks ? (<TrackList list={tracks} playlist_id={playlist_id} />) : (<>Sorry, no tracks to display..</>)}
+      {tracks ? (<TrackList list={tracks} />) : (<>Sorry, no tracks to display..</>)}
       </Box>
     </Box>
   )
