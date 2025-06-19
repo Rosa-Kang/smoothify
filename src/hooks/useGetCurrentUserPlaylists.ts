@@ -9,9 +9,10 @@ export const useGetCurrentUserPlaylists = (limit: number, options?: { enabled?: 
       offset: pageParam
     }),
     initialPageParam: 0, 
-    getNextPageParam: (lastPage, allPages) => {
-      const currentOffset = allPages.length * limit;
-      return currentOffset < lastPage.total ? currentOffset : undefined;
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.next) return undefined;
+      const url = new URL(lastPage.next);
+      return Number(url.searchParams.get('offset')) || undefined;
     },
     enabled: options?.enabled !== false && !!localStorage.getItem("access_token"),
     retry: false

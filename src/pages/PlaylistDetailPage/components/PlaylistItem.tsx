@@ -61,7 +61,7 @@ const DesktopPlaylistItem = ({item , index}:DesktopPlaylistItemProps) => {
                 playlist_id: playlist_id,
                 tracks: [{
                     uri: item.track.uri,
-                    positions: [index - 1] // 0-based index
+                    positions: [index - 1]
                 }]
             });
             handleMenuClose();
