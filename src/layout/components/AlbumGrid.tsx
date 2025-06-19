@@ -17,7 +17,7 @@ const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
   const initialCount = 10
   const [showAll, setShowAll] = useState(false)
   const visible = showAll ? albums : albums.slice(0, initialCount)
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const goToAlbum = (id: string) => {
       navigate(`/albums/${id}`);

@@ -8,7 +8,6 @@ import PlaylistItem from './components/PlaylistItem';
 import { PAGE_LIMIT } from '../../configs/commonConfig';
 import EmptyPlaylistSearch from '../../layout/components/EmptyPlaylistSearch';
 import LoginButton from '../../common/components/LoginButton';
-import ErrorMessage from '../../common/components/ErrorMessage';
 import { AxiosError } from 'axios';
 
 interface PlaylistDetailContainerProps {

@@ -44,7 +44,7 @@ interface PlaylistItems {
   image: string | undefined,
   owner: string,
   id: string | undefined,
-  handleClick : (id: string | undefined ) => void,
+  handleClick : (id: string ) => void,
   clickedId : string | null
 }
 
