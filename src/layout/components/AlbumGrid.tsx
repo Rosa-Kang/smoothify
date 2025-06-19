@@ -10,7 +10,7 @@ interface AlbumGridProps {
 }
 
 const AlbumGridContainer = styled('div')({
-  margin: '0 2rem',
+  margin: '0 12px',
 })
 
 const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
@@ -29,7 +29,7 @@ const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
         <Typography
           variant="h2"
           fontWeight="bold"
-          sx={{ fontSize: '45px', marginBottom: '1rem' }}
+          sx={{ fontSize: '32px', marginBottom: '1rem' }}
         >
           Top Albums {`for  '${keyword}'`}
         </Typography>

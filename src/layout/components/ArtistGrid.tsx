@@ -29,9 +29,9 @@ const ArtistGrid = ({
   }
 
   return (
-    <Box sx={{ padding:'2.5rem 1rem 6.5rem'}}>
+    <Box sx={{ padding:'2.5rem 12px 6.5rem'}}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Typography component="h2" fontWeight="bold" sx={{fontSize:'45px', marginBottom:'1rem'}}>
+        <Typography component="h2" fontWeight="bold" sx={{fontSize:'32px', marginBottom:'1rem'}}>
           Top Artists {`for  '${keyword}'`}
         </Typography>
         {artists?.length > initialCount && (

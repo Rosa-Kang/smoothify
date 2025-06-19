@@ -39,19 +39,33 @@ const ContentBox = styled(Box)(({theme}) => ({
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
     width: "100%",
+    height: '100%',
     padding: "16px 8px",
     marginBottom: "8px",
     marginRight: "8px",
-    height: 'auto',
     display: 'flex',
     flexDirection: 'column'
 }));
+
+const NavContainer = styled('div')(({theme})=> ({
+  borderRadius: "8px",
+  backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
+  width: "100%",
+  height: 'auto',
+  padding: "16px 8px",
+  marginBottom: "8px",
+  marginRight: "8px",
+  display: 'flex',
+  flexDirection: 'column'
+}))
 
 const NavList = styled("ul")({
   listStyle: "none",
   padding:0,
   margin:0
 });
+
 
 const StyledNavLink = styled(NavLink)(({theme}) => ({
   textDecoration:"none",
@@ -80,7 +94,7 @@ const AppLayout = () => {
             <img src={Logo} alt="Logo" style={{ width: '100%', height: 'auto' }} />
           </NavLink>
         </LogoContainer>
-        <ContentBox>
+        <NavContainer>
           <NavList>
               <StyledNavLink to="/">
                 <HomeIcon />
@@ -91,7 +105,7 @@ const AppLayout = () => {
                 <Typography variant="h2" fontWeight={700}>Search</Typography>
               </StyledNavLink>
           </NavList>
-        </ContentBox>
+        </NavContainer>
 
         <ContentBox height="100vh">
             <LibraryHead />
