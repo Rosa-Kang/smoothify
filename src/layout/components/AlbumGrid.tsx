@@ -29,14 +29,14 @@ const AlbumGrid = ({ albums, keyword }: AlbumGridProps) => {
         <Typography
           variant="h2"
           fontWeight="bold"
-          sx={{ fontSize: '32px', marginBottom: '1rem' }}
+          sx={{ fontSize: '28px', marginBottom: '1rem' }}
         >
           Top Albums {`for  '${keyword}'`}
         </Typography>
 
         {albums.length > initialCount && (
           <Button size="small" onClick={() => setShowAll(!showAll)}>
-            {showAll ? 'Show Less' : 'Show All'}
+            {showAll ? 'Show Less' : 'Show More'}
           </Button>
         )}
       </Box>

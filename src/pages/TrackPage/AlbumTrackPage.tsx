@@ -58,7 +58,7 @@ const AlbumTrackPage = () => {
         />
       )}
 
-      <Box my={3} sx={{ maxHeight: 300, overflowY: 'auto', pr: 1 }}>
+      <Box my={3} sx={{ maxHeight: 220, overflowY: 'auto', pr: 1 }}>
         <TrackList list={tracks} />
         {hasNextPage && (
           <LoadingTrigger ref={ref}>

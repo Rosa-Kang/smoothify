@@ -31,12 +31,12 @@ const ArtistGrid = ({
   return (
     <Box sx={{ padding:'2.5rem 12px 6.5rem'}}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Typography component="h2" fontWeight="bold" sx={{fontSize:'32px', marginBottom:'1rem'}}>
+        <Typography component="h2" fontWeight="bold" sx={{fontSize:'28px', marginBottom:'1rem'}}>
           Top Artists {`for  '${keyword}'`}
         </Typography>
         {artists?.length > initialCount && (
           <Button size="small" onClick={() => setShowAll(!showAll)}>
-            {showAll ? 'Show Less' : 'Show All'}
+            {showAll ? 'Show Less' : 'Show More'}
           </Button>
         )}
       </Box>

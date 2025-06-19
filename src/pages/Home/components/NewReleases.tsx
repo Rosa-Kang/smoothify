@@ -17,7 +17,7 @@ const NewReleases = () => {
 
   return (
     <div>
-        <Typography variant='h1' paddingTop='8px' paddingLeft='12px'>
+        <Typography variant='h1' paddingTop='8px' paddingLeft='12px' fontSize={28}>
           New Released Albums
         </Typography>
 

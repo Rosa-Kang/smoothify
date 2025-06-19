@@ -34,7 +34,7 @@ const ArtistTrackPage = () => {
         />
       )}
       </Box>
-      <Box my={3} sx={{  maxHeight: 300, overflowY: 'auto',  pr: 1}} className="artists-tracks">
+      <Box my={3} sx={{  maxHeight: 220, overflowY: 'auto',  pr: 1}} className="artists-tracks">
       {tracks ? (<TrackList list={tracks} />) : (<>Sorry, no tracks to display..</>)}
       </Box>
     </Box>
