@@ -30,7 +30,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSelect }) => {
         onKeyDown={handleKeyDown}
         placeholder="What do you want to play?"
         sx={{
-          width: 340,
+          width: {xs:'auto' , sm:340},
           ml: { xs: 0, md: 3 },
           bgcolor: 'rgba(255, 255, 255, 0.23)',
           borderRadius: '24px',

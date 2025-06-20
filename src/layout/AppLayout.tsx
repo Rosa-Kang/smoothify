@@ -31,7 +31,6 @@ const AppLayout = () => {
   return (
     <Layout>
       <Sidebar  />
-
       <ContentBox>
         <Navbar />
         <Outlet />

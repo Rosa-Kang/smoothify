@@ -6,6 +6,7 @@ import Logo from '../../assets/logo.png';
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import LibraryHead from "./LibraryHead";
 import Library from "./Library";
+import { Height } from "@mui/icons-material";
 
 const DesktopSidebar = styled("div")(({theme})=>({
   width: "331px",
@@ -17,6 +18,29 @@ const DesktopSidebar = styled("div")(({theme})=>({
   }
 }));
 
+
+const MobileSidebar = styled('div')(({theme})=> ({
+    zIndex: 10,
+    [theme.breakpoints.up("sm")] : {
+        display: "none"
+    }
+}))
+
+
+const MobileNavContainer = styled('div')(({theme})=> ({
+  position: 'fixed', 
+  left: 0,
+  bottom: 0,
+  width: '100%',
+  backgroundColor: 'black',
+  color: theme.palette.text.primary,
+  borderTop: `1px solid ${theme.palette.divider}`,
+  paddingBottom: 'env(safe-area-inset-bottom)',
+  height: '56px',
+  display: 'flex',
+  alignItems:'center'
+}))
+
 const LogoContainer = styled("figure") ({
   margin: "4px 98px 4px 8px",
   transition: "ease-in .3s",
@@ -25,7 +49,6 @@ const LogoContainer = styled("figure") ({
     cursor: "pointer"
   },
 })
-
 
 const NavContainer = styled('div')(({theme})=> ({
   borderRadius: "8px",
@@ -40,18 +63,6 @@ const NavContainer = styled('div')(({theme})=> ({
   flexDirection: 'column'
 }))
 
-const MobileNavContainer = styled('div')(({theme})=> ({
-  position: 'fixed', 
-  left: 0,
-  bottom: 0,
-  width: '100%',
-  zIndex: theme.zIndex.appBar, // or 1200
-  backgroundColor: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  borderTop: `1px solid ${theme.palette.divider}`,
-  paddingBottom: 'env(safe-area-inset-bottom)',
-}))
-
 const NavList = styled("ul")(({theme})=> ({
   listStyle: "none",
   padding:0,
@@ -59,9 +70,11 @@ const NavList = styled("ul")(({theme})=> ({
   display: 'flex',
   flexDirection: 'column',
   [theme.breakpoints.down("sm")] : {
-   flexDirection: 'row',
+    flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    alignItem:'center',
+    marginTop:'5px'
   }
 }));
 
@@ -83,9 +96,19 @@ const StyledNavLink = styled(NavLink)(({theme}) => ({
     color: theme.palette.text.primary
   },
   [theme.breakpoints.down("sm")] : {
-    flexDirection: 'column',
+      gap: 0,
+      flexDirection: 'column',
+      "&:not(:last-child)" : {
+      paddingBottom: 0,
+      },
   },
 }))
+
+const MobileLibraryWrapper = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center'
+})
 
 const ContentBox = styled(Box)(({theme}) => ({
     borderRadius: "8px",
@@ -101,13 +124,6 @@ const ContentBox = styled(Box)(({theme}) => ({
     marginRight: theme.spacing(1),
   },
 }));
-
-const MobileSidebar = styled('div')(({theme})=> ({
-    zIndex: 1,
-    [theme.breakpoints.up("sm")] : {
-        display: "none"
-    }
-}))
 
 const Sidebar = () => (
     <>
@@ -141,13 +157,16 @@ const Sidebar = () => (
                 <NavList>
                     <StyledNavLink to="/">
                         <HomeIcon />
-                        <Typography variant="h2" fontWeight={700}>Home</Typography>
+                        <Typography variant="h2" fontSize={12}>Home</Typography>
                     </StyledNavLink>
                     <StyledNavLink to="/search">
                         <SearchIcon />
-                        <Typography variant="h2" fontWeight={700}>Search</Typography>
+                        <Typography variant="h2" fontSize={12}>Search</Typography>
                     </StyledNavLink>
-                    <BookmarkIcon/>
+                    <MobileLibraryWrapper>
+                      <BookmarkIcon/>
+                      <Typography variant="h2" fontSize={12}>Your Library</Typography>
+                    </MobileLibraryWrapper>
                 </NavList>
             </MobileNavContainer>
         </MobileSidebar>
